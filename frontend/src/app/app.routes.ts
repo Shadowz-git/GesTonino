@@ -30,28 +30,13 @@ export const routes: Routes = [
   {
     path: 'gestionale',
     pathMatch: 'prefix',
-    children: [
-      {
-        path: 'dashboard'
-      },
-      {
-        path: 'items'
-      }
-    ]
+    loadChildren: () =>
+      import('./gestionale/gestionale.routes').then(m => m.GESTIONALE_ROUTES)
   },
   {
     path: 'auth',
-    children: [
-      {
-        path : 'login',
-      },
-      {
-        path : 'register',
-      },
-      {
-        path: 'customize',
-      }
-    ]
+    loadChildren: () =>
+      import('./auth/auth.routes').then(m => m.AUTH_ROUTES)
   },
   {
     path: '**',
