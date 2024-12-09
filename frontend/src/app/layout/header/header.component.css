@@ -1,0 +1,7 @@
+nav {
+  @apply bg-blue-500 p-5  !important;
+}
+
+nav > a {
+  @apply mx-5 !important;
+}
