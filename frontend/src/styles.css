@@ -5,5 +5,5 @@
 
 
 .activeButtonLink {
-  @apply bg-blue-500 text-white !important;
+  @apply bg-backgroundBlue text-white;
 }
