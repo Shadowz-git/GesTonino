@@ -1,9 +1,11 @@
+/*TODO: Sistemare gli input e i bottoni */
+
 #loginForm label {
-  @apply block mt-2 mb-1 text-xl font-medium text-gray-900 dark:text-white !important;
+  @apply block mt-2 mb-1 text-xl font-medium text-gray-900 dark:text-black !important;
 }
 
 #loginForm input {
-  @apply block w-full p-4 text-gray-900 border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 !important;
+  @apply block w-full p-2 border border-black rounded-md !important;
 }
 
 #formSearch input {
