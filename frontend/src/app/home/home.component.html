@@ -1,21 +1,26 @@
 <main class="flex flex-col h-screen max-w-full w-full max-h-screen">
   <app-header class="flex-initial"/>
-  <div id="homepage" class="h-full flex flex-row bg-cyan-100 mt-1 py-2">
-    <div id="map" class="w-[49.8%] bg-green-400 p-3 mr-4 rounded-r-lg">
-      <!-- Mettere qua div con mappa (stile che poi ci metto un componente dentro e copre tutto) -->
-      <!-- Crea componente mappa (ng generate component map) nel terminale, e dentro il componente si fa -->
-      <div id="formSearch" class="bg-gray-200 rounded-lg p-2 justify-center flex flex-col">
+  <div id="homepage" class="h-full flex flex-row bg-cyan-100 py-1">
+    <div id="map" class="w-[49.95%] bg-green-400 rounded-lg m-2 wrapper">
+      <div id="mapComponent" class="w-full h-full backgroundMap">
+        <app-map />
+      </div>
+      <div id="formSearch" class="bg-gray-200 rounded-lg p-2 mt-10 mx-5 onMapElement">
         <label for="basicSearch">Ricerca Prodotto</label>
         <form id="basicSearch">
-          <input id="searchContent" type="text" placeholder="Chi boi?"/>
-          <button type="submit">Ricerca Prodotto</button>
+          <div class="flex flex-row">
+            <input id="searchContent" type="text" placeholder="Chi boi?"/>
+            <button type="submit">Ricerca Avanzata</button>
+          </div>
+          <div class="flex justify-center">
+            <button type="submit" class="mt-2">Cerca Prodotto</button>
+          </div>
         </form>
-        <button type="submit">Ricerca Avanzata</button>
       </div>
     </div>
-    <div class="w-[0.3%] rounded-lg bg-gray-800 ">
+    <div class="w-[0.1%] rounded-lg bg-gray-800 ">
     </div>
-    <div class="w-[49.8%] bg-red-200 p-3 ml-4 rounded-l-lg" >
+    <div class="w-[49.95%] bg-red-200 p-3 m-2 rounded-lg" >
       <div class="">
         <h3 class="loginTitle">Sei già iscritto?<br>Inserisci le tue credenziali per accedere alla tua area riservata</h3>
         <form id="loginForm" class="flex flex-col p-2">
