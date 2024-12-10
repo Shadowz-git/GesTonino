@@ -1,5 +1,5 @@
 nav {
-  @apply bg-blue-500 p-5  !important;
+  @apply bg-blue-500 p-2  !important;
 }
 
 nav > a {
