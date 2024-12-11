@@ -21,7 +21,8 @@ export class MapComponent implements OnInit {
     this.map = L.map('map', {
       center: [39.35661,16.2406215], // Latitudine e longitudine iniziali
       zoom: 16,
-      zoomControl: false
+      zoomControl: false,
+      dragging: false
     });
 
     // Aggiungi un livello tile (es. OpenStreetMap)
