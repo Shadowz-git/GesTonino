@@ -18,10 +18,14 @@ public class DatabaseManager {
         }
     }
 
-    public static DatabaseManager getInstance() throws SQLException {
+    public static DatabaseManager getInstance() {
             synchronized (DatabaseManager.class) {
                 if (instance == null) {
-                    instance = new DatabaseManager();
+                    try {
+                        instance = new DatabaseManager();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         return instance;
