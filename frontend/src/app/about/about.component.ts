@@ -7,7 +7,6 @@ import {FooterComponent} from '../layout/footer/footer.component';
   selector: 'app-about',
   imports: [
     HeaderComponent,
-    NgOptimizedImage,
     FooterComponent
   ],
   templateUrl: './about.component.html',

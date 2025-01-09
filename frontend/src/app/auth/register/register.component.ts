@@ -8,13 +8,12 @@ import {NgIf} from '@angular/common';
   selector: 'app-register',
   templateUrl: './register.component.html',
   imports: [
-    ReactiveFormsModule,
-    NgIf,
-    RouterLink
+    ReactiveFormsModule
   ],
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent{
+  /*
   registerForm!: FormGroup; // Usa "!" per indicare che verrà inizializzato in ngOnInit()
 
   constructor(
@@ -51,4 +50,5 @@ export class RegisterComponent implements OnInit {
       );
     }
   }
+   */
 }
