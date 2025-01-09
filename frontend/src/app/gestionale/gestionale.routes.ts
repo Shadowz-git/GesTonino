@@ -1,4 +1,4 @@
-import {Routes} from '@angular/router';
+import {Routes} from "@angular/router";
 import {GestionaleComponent} from './gestionale/gestionale.component';
 
 export const GESTIONALE_ROUTES: Routes = [
