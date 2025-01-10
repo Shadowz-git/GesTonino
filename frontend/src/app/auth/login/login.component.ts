@@ -21,11 +21,12 @@ export class LoginComponent {
     this.authService.login(this.username, this.password).subscribe({
       next: (success) => {
         if (success) {
+          console.log("success");
           alert('Login effettuato con successo!');
           // Puoi reindirizzare a un'altra pagina, ad esempio:
           // this.router.navigate(['/dashboard']);
         } else {
-          this.errorMessage = 'Credenziali non valide!';
+          console.log("No");
         }
       },
       error: () => {

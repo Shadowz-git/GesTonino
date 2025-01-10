@@ -8,12 +8,12 @@ import {NgIf} from '@angular/common';
   selector: 'app-register',
   templateUrl: './register.component.html',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgIf
   ],
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent{
-  /*
   registerForm!: FormGroup; // Usa "!" per indicare che verrà inizializzato in ngOnInit()
 
   constructor(
@@ -24,7 +24,6 @@ export class RegisterComponent{
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
-      username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required]
@@ -38,11 +37,13 @@ export class RegisterComponent{
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      const { username, email, password } = this.registerForm.value;
-      this.authService.register({ username, email, password }).subscribe(
+      const email= this.registerForm.get('email')?.value;
+      console.log(email);
+      const password= this.registerForm.get('password')?.value;
+      this.authService.register(email, password).subscribe(
         response => {
           alert('Registrazione completata! Ora puoi accedere.');
-          this.router.navigate(['/login']);
+          this.router.navigate(['/home']);
         },
         error => {
           alert('Errore durante la registrazione: ' + error.error.message);
@@ -50,5 +51,4 @@ export class RegisterComponent{
       );
     }
   }
-   */
 }
