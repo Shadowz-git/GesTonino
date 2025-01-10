@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -20,25 +23,37 @@ public class AuthController {
     @CrossOrigin("http://localhost:4200")
     @PostMapping("/login")
     public boolean login(@RequestBody UserLoginRequest request) {
-        System.out.println(request);
+        System.out.println("Login: "+request.getEmail()+request.getPassword());
         return authService.validateCredentials(request.getEmail(), request.getPassword());
     }
 
     @CrossOrigin("http://localhost:4200")
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserLoginRequest request){
-        System.out.println("Register: "+request.toString());
-        try{
-            System.out.println("Sono nel try: "+request.getEmail()+request.getPassword());
+    public ResponseEntity<?> register(@RequestBody UserLoginRequest request) {
+
+        //Il problema dell'avviso di errore ma della corretta esecuzione della query è dato dal modo sbagliato in cui mandavamo
+        //la response, noi lo mandavamo come testo normale, però adesso con la mappa viene gestito come un JSON in modo che
+        //riesca ad interpretarlo il frontend
+        System.out.println("Register: " + request.toString());
+        try {
+            System.out.println("Sono nel try: " + request.getEmail() + request.getPassword());
             authService.registerUser(request.getEmail(), request.getPassword());
-            return ResponseEntity.ok("Registrazione avvenuta con successo");
-        }catch (UserAlreadyExistException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("L'utente esiste già");
-        }catch (InvalidEmailException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email invalida");
-        }
-        catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            // Risposta con JSON
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Registrazione avvenuta con successo");
+            return ResponseEntity.ok(response);
+        } catch (UserAlreadyExistException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "L'utente esiste già");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        } catch (InvalidEmailException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "Email invalida");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        } catch (Exception e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
