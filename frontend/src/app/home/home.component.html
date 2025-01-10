@@ -1,1 +1,30 @@
-<p>home works!</p>
+<!--TODO: Sistemare gli stili e i colori. Nel chill ovviamente -->
+<main class="flex flex-col h-screen max-w-full w-full max-h-screen">
+  <app-header class="flex-initial"/>
+  <div id="homepage" class="h-full flex flex-row bg-backgroundBlue py-1">
+    <!-- CERCA PRODOTTI -->
+    <div id="map" class="w-[49.95%] bg-backgroundBlue rounded-lg m-2 wrapper">
+      <div id="mapComponent" class="w-full h-full backgroundMap">
+        <app-map />
+      </div>
+      <div id="formSearch" class="bg-white rounded-md p-2 mt-10 mx-5 border border-black onMapElement">
+        <label for="basicSearch">Ricerca Prodotto</label>
+        <form id="basicSearch">
+          <div class="flex flex-row">
+            <input id="searchContent" type="text" placeholder="Chi boi?"/>
+            <button type="submit">Ricerca Avanzata</button>
+          </div>
+          <div class="flex justify-center">
+            <button type="submit" class="mt-2">Cerca Prodotto</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- LOGIN -->
+    <div class="w-[0.1%] rounded-lg bg-white "></div>
+    <div class="w-[49.95%] bg-white p-3 m-2 rounded-lg flex items-center" >
+      <app-login></app-login>
+    </div>
+  </div>
+</main>
+<app-footer/>
