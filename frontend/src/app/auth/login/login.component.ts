@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import {FormsModule} from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,11 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string | null = null;
 
-  constructor(private authService: AuthService) {}
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   onSubmit() {
     this.authService.login(this.username, this.password).subscribe({
@@ -24,7 +29,7 @@ export class LoginComponent {
           console.log("success");
           alert('Login effettuato con successo!');
           // Puoi reindirizzare a un'altra pagina, ad esempio:
-          // this.router.navigate(['/dashboard']);
+          this.router.navigate(['/gestionale']);
         } else {
           console.log("No");
         }
