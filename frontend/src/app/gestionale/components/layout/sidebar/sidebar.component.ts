@@ -1,26 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {NavigationService} from '../../../navigation.service';
+import {Component} from '@angular/core';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [],
+  imports: [
+    RouterLink,
+    RouterLinkActive
+  ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
 
-export class SidebarComponent implements OnInit {
-  activeComponent: string = '';
-
-  constructor(private navigationService: NavigationService) {}
-
-  ngOnInit() {
-    // Ascolta lo stato attivo dal servizio
-    this.navigationService.activeComponent$.subscribe(
-      (component) => (this.activeComponent = component)
-    );
-  }
-
-  setActiveComponent(component: string) {
-    this.navigationService.setActiveComponent(component);
-  }
+export class SidebarComponent {
 }
