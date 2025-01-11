@@ -9,8 +9,10 @@
       <p class="text-gray-500">Nome Azienda</p>
     </div>
   </div>
-  <div class="flex">
-    <div class="m-5 max-w-xl bg-white shadow-lg rounded-lg border border-gray-200">
+
+  <div class="flex w-full">
+    <!--Attività prodotti-->
+    <div class="m-5 w-3/4 max-w-xl bg-white shadow-lg rounded-lg border border-gray-200">
       <h1 class="text-xl font-bold text-gray-700 text-center border-b p-2">Attività Prodotti</h1>
       <div class="grid grid-cols-3 divide-x divide-gray-200">
         <!-- Nuovi -->
@@ -28,7 +30,6 @@
           <p class="text-sm text-gray-500 mt-2">Prodotti in esaurimento</p>
           <a href="#" class="text-yellow-500 underline m-auto text-sm">Clicca qui per visualizzarli</a>
         </div>
-
         <!-- Non Disponibili -->
         <div class="p-4 text-center">
           <p class="text-red-500 text-4xl font-bold">3</p>
@@ -38,10 +39,21 @@
         </div>
       </div>
     </div>
-
-    <div class="m-5 max-w-xl bg-white shadow-lg rounded-lg border border-gray-200 mr-10">
+    <!--Sommario inventario-->
+    <div class="m-5 min-w-64 w-1/4 bg-white shadow-lg rounded-lg border border-gray-200 mr-10">
       <h1 class="text-xl font-bold text-gray-700 text-center border-b p-2 ">Sommario inventario</h1>
-    </div>
+      <div class="flex items-center border-b-2 m-2">
+        <p class="text-nowrap">Prodotti Totali</p>
+        <div class="flex-auto w-5"></div>
+        <p class="mr-2 font-bold">123</p>
+      </div>
+      <div class="flex items-center border-b-2 m-2">
+        <p class="text-nowrap ">Valore Totale</p>
+        <div class="flex-auto w-5"></div>
+        <p class="mr-2 font-bold">€123456789</p>
+      </div>
     </div>
 
+
+    </div>
 </body>
