@@ -12,6 +12,8 @@ import {FormsModule} from '@angular/forms';
   ],
   styleUrls: ['./header-inventory.component.css']
 })
+
+// TODO: Stile fatto bene dei bottoni e css
 export class HeaderInventoryComponent {
 
   @Input() searchQuery: string = '';// Query di ricerca passata dal parent
