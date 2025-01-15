@@ -99,6 +99,7 @@
     *ngIf="addingItem"
     (save)="onSaveAdd($event)"
     (cancel)="onCancelAdd()"
+    (productAdded)="loadItems()"
   ></app-add-product-dialog>
 
 </div>

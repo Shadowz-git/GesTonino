@@ -6,6 +6,7 @@ import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {EditProductDialogComponent} from '../components/edit-product-dialog/edit-product-dialog.component';
 import {AddProductDialogComponent} from '../components/add-product-dialog/add-product-dialog.component';
 import {FilterService} from '../../services/filter.service';
+import {ProductService} from '../../services/product.service';
 
 @Component({
   selector: 'app-inventory',
@@ -35,22 +36,30 @@ export class InventoryComponent implements OnInit {
   editingItem: Item | null = null; // Item in modifica
   addingItem = false; // Stato per aggiunta prodotto
 
-  constructor(private filterService: FilterService) {}
+  constructor(private filterService: FilterService, private productService: ProductService,) {}
 
   ngOnInit(): void {
     this.loadItems();
   }
 
   loadItems(): void {
+    console.log("Sono in loaditems")
     // Carica gli item e imposta la paginazione
-    this.items = [
-      { id: 1, code: 'A101', name: 'Prodotto 1', category: 'Categoria 1', quantity: 10, price: 25.5, discount: 5 },
-      { id: 2, code: 'B202', name: 'Prodotto 2', category: 'Categoria 2', quantity: 5, price: 15, discount: 10 },
-      // Altri item...
-    ]; // Simula il fetch
-    this.filteredItems = [...this.items];
-    this.selectedItemsCount = this.filteredItems.length;
-    this.updatePagination();
+// Carica gli item dal backend usando il servizio
+    this.productService.getAllProducts().subscribe({
+      next: (products) => {
+        this.items = products;
+        console.log("items",this.items);
+        // Imposta gli item dal backend
+        this.filteredItems = [...this.items]; // Filtra e aggiorna gli item
+        this.selectedItemsCount = this.filteredItems.length; // Conta gli item filtrati
+        this.updatePagination(); // Aggiorna la paginazione
+      },
+      error: (err) => {
+        console.error('Errore nel caricare gli item:', err); // Gestisci eventuali errori
+      }
+    });
+
   }
 
   updatePagination(): void {
