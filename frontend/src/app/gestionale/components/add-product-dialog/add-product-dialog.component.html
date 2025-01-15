@@ -1,27 +1,27 @@
 <div>
   <h2 class="text-xl font-semibold mb-4">Aggiungi Prodotto</h2>
-  <form class="space-y-4">
+  <form class="space-y-4" [formGroup]="productForm" (ngSubmit)="onSave()">
     <div>
       <label class="block text-sm font-medium">Nome:</label>
-      <input [(ngModel)]="newProduct.name" name="name" type="text"
+      <input formControlName="name" name="name" type="text"
              class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" />
     </div>
 
     <div>
       <label class="block text-sm font-medium">Categoria:</label>
-      <input [(ngModel)]="newProduct.category" name="category" type="text"
+      <input formControlName="category" name="category" type="text"
              class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" />
     </div>
 
     <div>
       <label class="block text-sm font-medium">Quantità:</label>
-      <input [(ngModel)]="newProduct.quantity" name="quantity" type="number"
+      <input formControlName="quantity" name="quantity" type="number"
              class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" />
     </div>
 
     <div>
       <label class="block text-sm font-medium">Prezzo:</label>
-      <input [(ngModel)]="newProduct.price" name="price" type="number"
+      <input formControlName="price" name="price" type="number"
              class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" />
     </div>
   </form>
