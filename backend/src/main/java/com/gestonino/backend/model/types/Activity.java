@@ -1,5 +1,7 @@
 package com.gestonino.backend.model.types;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class Activity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference("user-activity")
     private User user;
 
     @ManyToMany
@@ -39,6 +42,7 @@ public class Activity {
     private List<Category> categories;
 
     @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("product-activity")
     private List<Product> products;
 
     // Getters e Setters

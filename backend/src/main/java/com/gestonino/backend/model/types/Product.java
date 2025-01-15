@@ -1,5 +1,6 @@
 package com.gestonino.backend.model.types;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -27,10 +28,12 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonBackReference("product-category")
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "activity_id", nullable = false)
+    @JsonBackReference("product-activity")
     private Activity activity;
 
     // Getters e Setters

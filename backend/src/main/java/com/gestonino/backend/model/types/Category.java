@@ -1,5 +1,7 @@
 package com.gestonino.backend.model.types;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -17,7 +19,9 @@ public class Category {
     @ManyToMany(mappedBy = "categories")
     private List<Activity> activities;
 
+
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("product-category")
     private List<Product> products;
 
     // Getters e Setters
