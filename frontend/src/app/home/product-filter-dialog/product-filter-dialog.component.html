@@ -1,0 +1,47 @@
+<div class="p-6 w-full max-w-md">
+  <h2 class="text-lg font-semibold mb-4">Filtri</h2>
+
+  <!-- Range di Prezzo -->
+  <div class="mb-4">
+    <label class="block text-sm font-medium mb-2">Prezzo</label>
+    <div class="flex items-center space-x-2">
+      <input
+        type="number"
+        [(ngModel)]="priceRange.min"
+        placeholder="Min"
+        class="border rounded w-1/2 px-2 py-1"
+      />
+      <span>-</span>
+      <input
+        type="number"
+        [(ngModel)]="priceRange.max"
+        placeholder="Max"
+        class="border rounded w-1/2 px-2 py-1"
+      />
+    </div>
+  </div>
+
+  <!-- Filtri per Categoria -->
+  <div class="mb-4">
+    <label class="block text-sm font-medium mb-2">Categorie</label>
+    <div *ngFor="let category of categories">
+      <label class="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          [(ngModel)]="category.selected"
+        />
+        <span>{{ category.name }}</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Pulsanti Azione -->
+  <div class="flex justify-end space-x-2 mt-6">
+    <button (click)="clearFilters()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+      Resetta
+    </button>
+    <button (click)="applyFilters()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+      Applica
+    </button>
+  </div>
+</div>

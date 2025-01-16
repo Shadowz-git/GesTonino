@@ -1,0 +1,68 @@
+<div class="p-6 bg-gray-100 rounded-lg shadow-lg">
+  <!-- Form di ricerca -->
+  <form class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+    <!-- Selezione città -->
+    <div class="relative">
+      <label for="cityInput" class="block text-sm font-medium text-gray-700">Città</label>
+      <div class="flex items-center">
+        <input
+          id="cityInput"
+          type="text"
+          [(ngModel)]="city"
+          (ngModelChange)="onCityChange($event)"
+          [ngModelOptions]="{standalone: true}"
+          placeholder="Inserisci la città"
+          class="w-full border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+    </div>
+
+    <!-- Selezione range -->
+    <div>
+      <label for="rangeInput" class="block text-sm font-medium text-gray-700">Raggio (km)</label>
+      <input
+        id="rangeInput"
+        type="range"
+        [(ngModel)]="range"
+        (ngModelChange)="onRangeChange($event)"
+        [ngModelOptions]="{standalone: true}"
+        [min]="2"
+        [max]="200"
+        class="w-full"
+      />
+      <p class="text-sm text-gray-600 text-center mt-1">{{ range }} km</p>
+    </div>
+
+    <!-- Ricerca prodotto -->
+    <div>
+      <label for="productSearch" class="block text-sm font-medium text-gray-700">Prodotto</label>
+      <input
+        id="productSearch"
+        type="text"
+        [(ngModel)]="productQuery"
+        (ngModelChange)="onSearchQueryChange($event)"
+        [ngModelOptions]="{standalone: true}"
+        placeholder="Inserisci il nome del prodotto"
+        class="w-full border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <!-- Pulsanti -->
+    <div class="col-span-1 md:col-span-3 flex justify-between mt-4">
+      <button
+        type="button"
+        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md"
+        (click)="onSearch()"
+      >
+        Cerca
+      </button>
+      <button
+        type="button"
+        class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md"
+        (click)="openFilterDialog()"
+      >
+        Filtri Avanzati
+      </button>
+    </div>
+  </form>
+</div>
