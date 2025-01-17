@@ -5,6 +5,7 @@ import com.gestonino.backend.model.exceptions.InvalidEmailException;
 import com.gestonino.backend.model.exceptions.UserAlreadyExistException;
 import com.gestonino.backend.model.types.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
@@ -24,7 +25,7 @@ public class AuthService {
 
     public boolean validateCredentials(String email, String password) {
         User user = userRepository.findByEmail(email);
-        return user != null && user.getPassword().equals(password);
+        return user != null && BCrypt.checkpw(password, user.getPassword());
     }
 
     public boolean registerUser(String email, String password) {
@@ -36,7 +37,8 @@ public class AuthService {
             System.out.println("Qui qualcosa non va "+email);
             throw new InvalidEmailException();
         }
-        userRepository.save(new User(email, password));
+        String encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
+        userRepository.save(new User(email, encryptedPassword));
         return true;
     }
 
