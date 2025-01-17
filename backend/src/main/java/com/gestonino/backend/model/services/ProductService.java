@@ -1,32 +1,54 @@
 package com.gestonino.backend.model.services;
 
-import com.gestonino.backend.model.dao.ProductDAO;
+import com.gestonino.backend.model.dao.ActivityRepository;
+import com.gestonino.backend.model.dao.ProductRepository;
+import com.gestonino.backend.model.types.Activity;
 import com.gestonino.backend.model.types.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Service
 public class ProductService {
 
-    private final ProductDAO productDAO;
+    @Autowired
+    private ActivityRepository activityRepository;
 
-    public ProductService() throws SQLException {
-        this.productDAO = new ProductDAO();
-    }
+    @Autowired
+    private ProductRepository productRepository;
 
-    public List<Product> findByActivityId(Long activityId) throws SQLException {
-        return productDAO.findByActivityId(activityId);
-    }
+    public List<Product> searchProducts(String query, Double lat, Double lng, Double radius,
+                                        List<String> categories, Double minPrice, Double maxPrice) {
 
-    public Product findById(Long id) throws SQLException {
-        return productDAO.findById(id);
-    }
+        // Normalizza il raggio tra 2 km e 200 km
+        double adjustedRadius = Math.min(Math.max(radius != null ? radius : 2, 2), 200);
 
-    public void save(Product product) throws SQLException {
-        productDAO.save(product);
-    }
+        // Se le coordinate sono nulle, non eseguire ricerche per attività
+        List<Long> activityIds = Collections.emptyList();
+        if (lat != null && lng != null) {
+            // Trova le attività nel raggio
+            List<Activity> activities = activityRepository.findActivitiesInRadius(lat, lng, adjustedRadius);
+            activityIds = activities.stream()
+                    .map(Activity::getId)
+                    .collect(Collectors.toList());
+        }
 
-    public void delete(Long id) throws SQLException {
-        productDAO.delete(id);
+        // Se non ci sono attività, ritorna una lista vuota
+        if (activityIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // Gestisci il prezzo minimo e massimo: ignora se -1 o nullo
+        Double validMinPrice = (minPrice != null && minPrice != -1) ? minPrice : null;
+        Double validMaxPrice = (maxPrice != null && maxPrice != -1) ? maxPrice : null;
+
+        // Gestisci le categorie: ignora se la lista è vuota o nulla
+        List<String> validCategories = (categories != null && !categories.isEmpty()) ? categories : null;
+
+        // Trova i prodotti basati sugli ID delle attività e i filtri forniti
+        return productRepository.findProductsByActivityIds(query, validCategories, validMinPrice, validMaxPrice, activityIds);
     }
 }
