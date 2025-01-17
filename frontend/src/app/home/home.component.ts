@@ -8,6 +8,8 @@ import {LocationService} from '../services/location.service';
 import {Activity, Product, ProductFilters, ProductService} from '../services/product.service';
 import {MatDialog} from '@angular/material/dialog';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -36,12 +38,31 @@ export class HomeComponent implements OnInit {
   // Risultati
   results: Product[] = []; // Prodotti trovati
   activities: Activity[] = []; // Attività aggregate per la mappa
+  private citySubject = new Subject<string>();
 
   constructor(
     private locationService: LocationService,
     private productService: ProductService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    //Visto che veniva eseguita una query per ogni carattere
+    //digitato, usando questo metodo la query viene eseguita una
+    //volta terminata la parola.
+    this.citySubject.pipe(
+      debounceTime(300), // Aspetta 300ms dopo l'ultimo input prima di procedere
+      distinctUntilChanged() // Ignora se il valore non è cambiato rispetto all'ultimo
+    ).subscribe(newCity => {
+      this.locationService.getCoordinatesFromCity(newCity).subscribe({
+        next: ({ lat, lng }) => {
+          this.lat = lat;
+          this.lng = lng;
+        },
+        error: () => {
+          console.error('Errore nel recupero delle coordinate dalla città');
+        },
+      });
+    });
+  }
 
   ngOnInit(): void {
     // Inizializzazione (se necessario) eseguita al caricamento della Home
@@ -64,19 +85,11 @@ export class HomeComponent implements OnInit {
   }
 
   /**
-   * Aggiorna la città e recupera le nuove coordinate.
+   * Recupera il nome della città che stai cercando.
    */
   onCityChange(newCity: string) {
     this.city = newCity;
-    this.locationService.getCoordinatesFromCity(newCity).subscribe({
-      next: ({ lat, lng }) => {
-        this.lat = lat;
-        this.lng = lng;
-      },
-      error: () => {
-        console.error('Errore nel recupero delle coordinate dalla città');
-      },
-    });
+    this.citySubject.next(newCity); // Emetti il nuovo valore nel Subject
   }
 
   /**
