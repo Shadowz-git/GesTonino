@@ -21,7 +21,7 @@ public class ProductController {
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
-    @GetMapping("/getAllProduct")
+    @GetMapping("/getAllProducts")
     public ResponseEntity<List<Product>> getAllProduct() {
         List<Product> products = productRepository.findAll();
         System.out.println("Prodottelli: ");
