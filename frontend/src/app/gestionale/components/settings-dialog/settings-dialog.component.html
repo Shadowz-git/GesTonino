@@ -1,0 +1,73 @@
+<div class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+  <div
+    class="bg-gray-100 rounded-lg shadow-lg p-6 w-full max-w-md"
+    (mousedown)="onContentMouseDown($event)"
+  >
+    <h2 class="text-xl text-gray-950 font-semibold mb-4">Impostazioni</h2>
+    <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()">
+      <div class="mb-4">
+        <label for="activityName" class="block text-sm font-medium text-gray-700">Nome Attività</label>
+        <input
+          type="text"
+          id="activityName"
+          class="custom-input"
+          formControlName="activityName"
+          [ngClass]="{'invalid-input': settingsForm.get('activityName')?.invalid && settingsForm.get('activityName')?.touched}"
+        />
+        <div *ngIf="settingsForm.get('activityName')?.invalid && settingsForm.get('activityName')?.touched" class="text-red-500 text-sm">
+          Il nome attività è obbligatorio.
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="activityAddress" class="block text-sm font-medium text-gray-700">Indirizzo</label>
+        <input
+          type="text"
+          id="activityAddress"
+          class="custom-input"
+          formControlName="activityAddress"
+          (ngModelChange)="onCityChange($event, activityCap)"
+          [ngClass]="{'invalid-input': settingsForm.get('activityAddress')?.invalid && settingsForm.get('activityAddress')?.touched}"
+        />
+        <div *ngIf="settingsForm.get('activityAddress')?.invalid && settingsForm.get('activityAddress')?.touched" class="text-red-500 text-sm">
+          L'indirizzo è obbligatorio.
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="activityCap" class="block text-sm font-medium text-gray-700">CAP</label>
+        <input
+          type="number"
+          id="activityCap"
+          class="custom-input"
+          formControlName="activityCap"
+          (ngModelChange)="onCityChange(activityAddress, $event)"
+          [ngClass]="{'invalid-input': settingsForm.get('activityCap')?.invalid && settingsForm.get('activityCap')?.touched}"
+        />
+        <div *ngIf="settingsForm.get('activityCap')?.invalid && settingsForm.get('activityCap')?.touched" class="text-red-500 text-sm">
+          Il CAP è obbligatorio e deve essere numerico.
+        </div>
+      </div>
+
+      <div class="h-60 w-full">
+        <app-map [latitude]="lat" [longitude]="lng" class=""></app-map>
+      </div>
+
+      <div class="flex mt-5 justify-end">
+        <button
+          type="button"
+          class="mr-2 px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md"
+          (click)="closeModal()"
+        >
+          Annulla
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-md"
+        >
+          Salva
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
