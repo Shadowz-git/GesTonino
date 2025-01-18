@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {ProductService} from '../../../services/product.service';
 
 @Component({
   selector: 'app-edit-product-dialog',
@@ -16,6 +17,8 @@ export class EditProductDialogComponent {
 
   updatedProduct: any;
 
+  constructor(private productService: ProductService) { }
+
   ngOnInit() {
     // Copia del prodotto per evitare modifiche dirette all'originale
     this.updatedProduct = { ...this.product };
@@ -26,6 +29,16 @@ export class EditProductDialogComponent {
   }
 
   onSave() {
-    this.save.emit(this.updatedProduct);
+    const code = this.updatedProduct.code;
+    const activityId:string|null = localStorage.getItem("activity_id"); // Assicurati che activity_id sia presente nel prodotto
+    console.log("ActivityId:",activityId);
+    this.productService.updateProduct(code, activityId, this.updatedProduct).subscribe({
+      next: (response) => {
+        this.save.emit(this.updatedProduct); // Emetti l'evento save con il prodotto aggiornato
+      },
+      error: (error) => {
+        console.error('Errore durante l\'aggiornamento del prodotto', error);
+      }
+    });
   }
 }
