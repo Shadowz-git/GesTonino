@@ -14,6 +14,7 @@ export interface Product {
   activityName?: string;
   activityLat?: number;
   activityLng?: number;
+  selected: boolean;
 }
 
 export interface ProductFilters {
@@ -38,7 +39,25 @@ export class ProductService {
 
 
   getAllProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/getAllProducts`);
+    // Recupera activityId dal localStorage o usa una stringa vuota come fallback
+    const activityId = localStorage.getItem("activity_id") || "";
+
+    // Crea HttpParams per passare activityId come query parameter
+    const params = new HttpParams().set('activity_id', activityId);
+
+    // Effettua la richiesta HTTP con i params
+    return this.http.get<Product[]>(`${this.apiUrl}/getAllProducts`, { params });
+  }
+
+  updateProduct(code: string, activityId: string|null, product: any): Observable<any> {
+    const url = `${this.apiUrl}/editProduct?code=${code}&activityId=${activityId}`;
+    console.log("URL: ",url);
+    return this.http.put(url, product);
+  }
+
+  deleteProductsByCodesAndActivityId(codes: string[], activityId: string | null): Observable<void> {
+    const url = `${this.apiUrl}/deleteProducts?codes=${codes.join(',')}&activityId=${activityId}`;
+    return this.http.delete<void>(url);
   }
 
   /**
