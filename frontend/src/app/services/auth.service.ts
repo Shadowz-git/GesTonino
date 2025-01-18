@@ -16,7 +16,8 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/login`, payload, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
-      })
+      }),
+      withCredentials: true
     });
   }
 
@@ -42,5 +43,14 @@ export class AuthService {
         'Content-Type': 'application/json'
       })
     });
+  }
+
+  isAuthenticated(): boolean {
+    return !!(localStorage.getItem('jwt_token') || this.getCookie('jwt_token'));
+  }
+
+  private getCookie(name: string): string | null {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
   }
 }

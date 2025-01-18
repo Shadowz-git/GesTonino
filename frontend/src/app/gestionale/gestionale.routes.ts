@@ -1,10 +1,12 @@
 import {Routes} from "@angular/router";
 import {GestionaleComponent} from './gestionale/gestionale.component';
+import {authGuard} from '../auth/auth.guard';
 
 export const GESTIONALE_ROUTES: Routes = [
   {
     path: '',
     component: GestionaleComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
