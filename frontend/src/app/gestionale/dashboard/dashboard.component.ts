@@ -10,5 +10,6 @@ import {DashboardchartComponent} from '../components/dashboardchart/dashboardcha
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-
+  email: string | null=localStorage.getItem('user');
+  activityName: string|null=localStorage.getItem('activity_name');
 }
