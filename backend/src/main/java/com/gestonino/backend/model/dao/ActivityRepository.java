@@ -20,4 +20,6 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
             @Param("lng") Double lng,
             @Param("radius") Double radius
     );
+    @Query("SELECT a.id, a.name FROM Activity a WHERE a.user.id = :user_id")
+    List<Object[]> findIdAndNameByUserId(@Param("user_id") Long user_id);
 }
