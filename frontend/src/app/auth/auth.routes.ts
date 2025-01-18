@@ -8,6 +8,7 @@ export const AUTH_ROUTES: Routes = [
     children: [
       {
         path: 'login',
+        redirectTo: '/',
         loadComponent: () =>
           import('./login/login.component').then(m => m.LoginComponent),
       },
