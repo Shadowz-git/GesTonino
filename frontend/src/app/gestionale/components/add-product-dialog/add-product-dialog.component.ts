@@ -69,7 +69,7 @@ export class AddProductDialogComponent implements OnInit {
         quantity: this.productForm.value.quantity,
         discount: this.productForm.value.discount || 0, // Imposta 0 se non specificato
         category: { id: 1 }, // Associa la categoria per ID
-        activity: { id: 1 }, // Associa l'attività per ID
+        activity: { id: localStorage.getItem("activity_id") }, // Associa l'attività per ID
       };
 
       // Log dei dati per debug
