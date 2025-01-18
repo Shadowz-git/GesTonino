@@ -16,7 +16,7 @@ export class SettingsService {
     cap: string;
     latitude: number;
     name: string;
-    user: number;
+    user: string | null;
     longitude: number
   }): Observable<any> {
     return this.http.post(this.apiUrl, data);
