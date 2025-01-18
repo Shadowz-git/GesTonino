@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth';
 
-
   constructor(private http: HttpClient) {}
 
   login(email: string, password: string): Observable<any> {
@@ -19,6 +18,16 @@ export class AuthService {
       }),
       withCredentials: true
     });
+  }
+
+  setActivity(activityId:string, activityName:string){
+    localStorage.setItem('activity_id', activityId);
+    localStorage.setItem('activity_name', activityName);
+  }
+
+  setUser(userEmail:string, user_id: string){
+    localStorage.setItem('user', userEmail);
+    localStorage.setItem('user_id', user_id);
   }
 
   // Metodo per memorizzare il token JWT (una volta ricevuto dal server)
@@ -34,6 +43,10 @@ export class AuthService {
   // Metodo per rimuovere il token (logout)
   removeSession() {
     localStorage.removeItem('jwt_token');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('user');
+    localStorage.removeItem('activity_id');
+    localStorage.removeItem('activity_name');
   }
 
   register(email: string, password: string): Observable<boolean> {
