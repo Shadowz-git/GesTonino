@@ -102,7 +102,7 @@ export class SettingsDialogComponent implements OnDestroy {
       cap: this.settingsForm.get('activityCap')?.value,
       latitude: this.lat,
       longitude: this.lng,
-      user: 1
+      user: localStorage.getItem('user_id')
     };
 
     // Chiamata al servizio per inviare i dati al backend
