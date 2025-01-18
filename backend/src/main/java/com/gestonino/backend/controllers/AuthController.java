@@ -5,6 +5,8 @@ import com.gestonino.backend.model.exceptions.InvalidEmailException;
 import com.gestonino.backend.model.exceptions.UserAlreadyExistException;
 import com.gestonino.backend.model.requests.UserLoginRequest;
 import com.gestonino.backend.model.services.AuthService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,19 +29,26 @@ public class AuthController {
 
     @CrossOrigin("http://localhost:4200")
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginRequest request) {
-        System.out.println("Login: "+request.getEmail()+request.getPassword());
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity<?> login(@RequestBody UserLoginRequest request, HttpServletResponse response) {
+        Map<String, Object> responseMap = new HashMap<>();
 
         if (authService.validateCredentials(request.getEmail(), request.getPassword())) {
             Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
             String token = jwtUtil.generateToken(auth);
-            response.put("token", token);
+
+            Cookie cookie = new Cookie("token", token);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
+            cookie.setPath("/");
+            cookie.setMaxAge(24 * 60 * 60); // 1 giorno
+            response.addCookie(cookie);
+
+            responseMap.put("token", token);
+            responseMap.put("user", request.getEmail());
             return ResponseEntity.ok(response);
         }
 
-        response.put("error", "Invalid email or password");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMap);
     }
 
     @CrossOrigin("http://localhost:4200")
