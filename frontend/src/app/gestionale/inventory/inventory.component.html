@@ -33,15 +33,12 @@
       </tr>
       </thead>
       <tbody>
-      <tr
-        *ngFor="let item of paginatedItems"
-        [class.bg-gray-50]="selectedItems.has(item.id)"
-      >
+      <tr *ngFor="let item of paginatedItems" [class.bg-gray-50]="item.selected">
         <td class="border border-gray-300 p-2 text-center">
           <input
             type="checkbox"
-            [checked]="selectedItems.has(item.id)"
-            (change)="toggleSelection(item.id)"
+            [checked]="item.selected"
+            (change)="toggleSelection(item)"
           />
         </td>
         <td class="border border-gray-300 p-2">{{ item.code }}</td>

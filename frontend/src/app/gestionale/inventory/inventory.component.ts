@@ -43,24 +43,22 @@ export class InventoryComponent implements OnInit {
   }
 
   loadItems(): void {
-    console.log("Sono in loaditems")
-    // Carica gli item e imposta la paginazione
-// Carica gli item dal backend usando il servizio
+    console.log("Sono in loaditems");
     this.productService.getAllProducts().subscribe({
       next: (products) => {
-        this.items = products;
-        console.log("items",this.items);
-        // Imposta gli item dal backend
-        this.filteredItems = [...this.items]; // Filtra e aggiorna gli item
-        this.selectedItemsCount = this.filteredItems.length; // Conta gli item filtrati
-        this.updatePagination(); // Aggiorna la paginazione
+        // Aggiungi la proprietà `selected` a ogni prodotto
+        this.items = products.map(product => ({ ...product, selected: false }));
+        console.log("items", this.items);
+        this.filteredItems = [...this.items];
+        this.selectedItemsCount = this.filteredItems.length;
+        this.updatePagination();
       },
       error: (err) => {
-        console.error('Errore nel caricare gli item:', err); // Gestisci eventuali errori
+        console.error('Errore nel caricare gli item:', err);
       }
     });
-
   }
+
 
   updatePagination(): void {
     // Aggiorna la lista paginata
@@ -97,27 +95,54 @@ export class InventoryComponent implements OnInit {
     this.updatePagination();
   }
 
+  toggleSelection(item: Item): void {
+    item.selected = !item.selected;
+    this.updateSelectedCount();
+  }
+
   toggleSelectAll(): void {
-    if (this.selectedItems.size === this.filteredItems.length) {
-      this.selectedItems.clear();
-    } else {
-      this.filteredItems.forEach(item => this.selectedItems.add(item.id));
-    }
+    const allSelected = this.filteredItems.every(item => item.selected);
+    this.filteredItems.forEach(item => item.selected = !allSelected);
+    this.updateSelectedCount();
   }
 
-  toggleSelection(itemId: number): void {
-    if (this.selectedItems.has(itemId)) {
-      this.selectedItems.delete(itemId);
-    } else {
-      this.selectedItems.add(itemId);
-    }
+  updateSelectedCount(): void {
+    this.selectedItemsCount = this.filteredItems.filter(item => item.selected).length;
   }
-
   deleteSelected(): void {
-    this.items = this.items.filter(item => !this.selectedItems.has(item.id));
-    this.filteredItems = [...this.items];
-    this.selectedItems.clear();
-    this.updatePagination();
+    // Ottieni i prodotti selezionati
+    const selectedProducts = this.filteredItems.filter(item => item.selected);
+
+    console.log('Prodotti selezionati:', selectedProducts); // Debug
+
+    if (selectedProducts.length === 0) {
+      console.error('Nessun prodotto selezionato');
+      return;
+    }
+
+    // Estrai i codici dei prodotti selezionati
+    const selectedCodes = selectedProducts.map(product => product.code);
+
+    console.log('Codici dei prodotti selezionati:', selectedCodes); // Debug
+
+    // Ottieni l'activityId dal localStorage
+    const activityId = localStorage.getItem("activity_id");
+
+    if (!activityId) {
+      console.error('activityId non è definito');
+      return;
+    }
+
+    // Chiama il servizio per eliminare i prodotti selezionati
+    this.productService.deleteProductsByCodesAndActivityId(selectedCodes, activityId).subscribe({
+      next: () => {
+        console.log('Prodotti eliminati con successo');
+        this.loadItems(); // Ricarica la lista dei prodotti
+      },
+      error: (error) => {
+        console.error('Errore durante l\'eliminazione dei prodotti', error);
+      }
+    });
   }
 
   addItem(): void {
