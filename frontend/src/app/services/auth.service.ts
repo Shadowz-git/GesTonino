@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,13 +11,36 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): Observable<boolean> {
+  login(email: string, password: string): Observable<any> {
     const payload = { email, password };
-    return this.http.post<boolean>(`${this.apiUrl}/login`, payload);
+    return this.http.post<any>(`${this.apiUrl}/login`, payload, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+
+  // Metodo per memorizzare il token JWT (una volta ricevuto dal server)
+  setSession(token: string) {
+    localStorage.setItem('jwt_token', token);
+  }
+
+  // Metodo per ottenere il token JWT
+  getToken(): string | null {
+    return localStorage.getItem('jwt_token');
+  }
+
+  // Metodo per rimuovere il token (logout)
+  removeSession() {
+    localStorage.removeItem('jwt_token');
   }
 
   register(email: string, password: string): Observable<boolean> {
     const payload = { email, password };
-    return this.http.post<boolean>(`${this.apiUrl}/register`, payload);
+    return this.http.post<boolean>(`${this.apiUrl}/register`, payload, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
   }
 }

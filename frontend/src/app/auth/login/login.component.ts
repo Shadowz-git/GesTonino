@@ -24,10 +24,10 @@ export class LoginComponent {
 
   onSubmit() {
     this.authService.login(this.username, this.password).subscribe({
-      next: (success) => {
-        if (success) {
-          console.log("success");
+      next: (response) => {
+        if (response) {
           alert('Login effettuato con successo!');
+          this.authService.setSession(response.token);
           // Puoi reindirizzare a un'altra pagina, ad esempio:
           this.router.navigate(['/gestionale']);
         } else {

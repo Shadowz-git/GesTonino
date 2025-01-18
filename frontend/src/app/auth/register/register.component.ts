@@ -43,7 +43,7 @@ export class RegisterComponent{
       this.authService.register(email, password).subscribe(
         response => {
           alert('Registrazione completata! Ora puoi accedere.');
-          this.router.navigate(['/home']);
+          this.router.navigate(['/auth/login']);
         },
         error => {
           alert('Errore durante la registrazione: ' + error.error.message);
