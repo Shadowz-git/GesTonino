@@ -27,13 +27,34 @@ public class ProductController {
     }
 
     @GetMapping("/getAllProducts")
-    public ResponseEntity<List<Product>> getAllProduct() {
-        List<Product> products = productRepository.findAll();
+    public ResponseEntity<List<Product>> getAllProduct(@RequestParam String activity_id) {
+        System.out.println("Sono qua"+activity_id);
+        List<Product> products = productRepository.findByActivityId(Long.valueOf(activity_id));
         System.out.println("Prodottelli: ");
         for(Product product : products) {
             System.out.println(product.getName());
         }
         return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @PutMapping("/editProduct")
+    public ResponseEntity<Void> updateProductByCodeAndActivity(
+            @RequestParam String code,
+            @RequestParam Long activityId,
+            @RequestBody Product productDetails) {
+
+        System.out.println("Richiesta di aggiornamento per il prodotto con code: " + code + " e activityId: " + activityId);
+
+        productRepository.updateProductByCodeAndActivityId(
+                code,
+                String.valueOf(activityId),
+                productDetails.getName(),
+                productDetails.getQuantity(),
+                productDetails.getPrice(),
+                productDetails.getDiscount()
+        );
+
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/searchProducts")
@@ -49,6 +70,22 @@ public class ProductController {
         List<Product> products = productService.searchProducts(query, lat, lng, radius, categories, minPrice, maxPrice);
         System.out.println("Prodottelli: " + products);
         return ResponseEntity.ok(products);
+    }
+
+    @DeleteMapping("/deleteProducts")
+    public ResponseEntity<Void> deleteProductsByCodesAndActivityId(
+            @RequestParam List<String> codes,
+            @RequestParam Long activityId) {
+
+        System.out.println("Richiesta di eliminazione per i prodotti con codes: " + codes + " e activityId: " + activityId);
+
+        if (codes == null || codes.isEmpty() || activityId == null) {
+            System.err.println("Errore: codes o activityId non sono validi");
+            return ResponseEntity.badRequest().build();
+        }
+
+        productRepository.deleteByCodesAndActivityId(codes, activityId);
+        return ResponseEntity.ok().build();
     }
 
 }
