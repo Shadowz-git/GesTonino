@@ -12,7 +12,7 @@ import {Router} from '@angular/router';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  username: string = '';
+  email: string = '';
   password: string = '';
   errorMessage: string | null = null;
 
@@ -23,12 +23,14 @@ export class LoginComponent {
   ) {}
 
   onSubmit() {
-    this.authService.login(this.username, this.password).subscribe({
+    this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
         if (response) {
           alert('Login effettuato con successo!');
           this.authService.setSession(response.token);
-          // Puoi reindirizzare a un'altra pagina, ad esempio:
+          this.authService.setUser(response.user, response.user_id);
+          this.authService.setActivity(response.activity_id, response.activity_name);
+
           this.router.navigate(['/gestionale']);
         } else {
           console.log("No");
