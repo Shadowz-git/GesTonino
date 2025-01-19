@@ -55,7 +55,6 @@ export class MapService {
   }
 
   addExistentMarker(marker: L.Marker | any): void {
-    console.log("markerigno");
     this.markers.push(marker);
   }
 
@@ -65,15 +64,23 @@ export class MapService {
 
     // Aggiungi i nuovi marker per ogni attività
     activities.forEach((activity: Activity) => {
-      const marker = L.marker([activity.lat, activity.lng]);
+      const customDivIcon = L.divIcon({
+        className: 'custom-div-icon',
+        html: this.createMarkerHtml(activity.filteredProductCount, activity.name),
+        iconSize: [200, 50],
+        iconAnchor: [100, 25] // Centro del marker
+      })
+
+      const marker = L.marker([activity.lat, activity.lng], {icon: customDivIcon});
 
       // Aggiungi un popup con il nome dell'attività e il numero di prodotti filtrati
       marker.bindPopup(
         `<strong>${activity.name}</strong><br>Prodotti: ${activity.filteredProductCount}`
       );
 
-      // Aggiungi il marker alla mappa e alla lista dei marker
-      this.addExistentMarker(marker);
+
+      marker.addTo(this.map)
+      this.markers.push(marker);
     });
   }
 
@@ -81,10 +88,6 @@ export class MapService {
   // Aggiungi un marker alla mappa
   addMarker(lat: number, lng: number): L.Marker {
     const marker = L.marker([lat, lng]).addTo(this.map);
-    // Aggiungi un popup con il nome dell'attività e il numero di prodotti filtrati
-    marker.bindPopup(
-      `<strong>quattromiglia</strong><br>Prodotti: noh`
-    );
     this.markers.push(marker);
     return marker;
   }
@@ -99,6 +102,29 @@ export class MapService {
       this.map.removeLayer(marker);
     });
     this.markers = [];
+  }
+
+  // Funzione per generare il codice HTML del marker
+  createMarkerHtml(products: number, name: string): string {
+    const backgroundColor = this.getBackgroundColor(products);
+
+    return `
+      <div class="flex items-center justify-between ${backgroundColor} text-white p-2 rounded-md shadow-lg">
+        <span class="font-bold text-lg">${products}</span>
+        <span class="ml-2 text-sm">${name}</span>
+      </div>
+    `;
+  }
+
+  // Funzione per determinare il colore di sfondo in base al numero di prodotti
+  getBackgroundColor(products: number): string {
+    if (products === 1) {
+      return 'bg-blue-500';  // Blu per 1 prodotto
+    } else if (products <= 5) {
+      return 'bg-yellow-500';  // Giallo per 2-5 prodotti
+    } else {
+      return 'bg-green-500';  // Verde per più di 5 prodotti
+    }
   }
 
   // Abilita le opzioni (quando si apre il dialogo)
