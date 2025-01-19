@@ -107,12 +107,11 @@ export class MapService {
   // Funzione per generare il codice HTML del marker
   createMarkerHtml(products: number, name: string): string {
     const backgroundColor = this.getBackgroundColor(products);
-    const arrowColor = this.getArrowColor(products);
 
     return `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" class="relative" width="200" height="60">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 70" class="relative" width="200" height="70">
       <!-- Rettangolo del marker -->
-      <rect x="0" y="0" width="200" height="50" rx="10" ry="10" fill="${backgroundColor}" />
+      <rect x="0" y="0" width="200" height="60" rx="10" ry="10" fill="${backgroundColor}" />
 
       <!-- Numero di prodotti -->
       <text x="10" y="30" font-family="Arial" font-size="20" fill="white" font-weight="bold">${products}</text>
@@ -120,8 +119,8 @@ export class MapService {
       <!-- Nome dell'attività -->
       <text x="50" y="30" font-family="Arial" font-size="16" fill="white">${name}</text>
 
-      <!-- Freccia in basso -->
-      <polygon points="100,50 90,60 110,60" fill="${arrowColor}" />
+      <!-- Freccia in basso (triangolo) -->
+      <polygon points="90,60 100,70 110,60" fill="${backgroundColor}" />
     </svg>
   `;
   }
@@ -129,21 +128,11 @@ export class MapService {
   // Funzione per determinare il colore di sfondo in base al numero di prodotti
   getBackgroundColor(products: number): string {
     if (products === 1) {
-      return 'bg-blue-500';  // Blu per 1 prodotto
+      return '#3b82f6';  // Blu per 1 prodotto
     } else if (products <= 5) {
-      return 'bg-yellow-500';  // Giallo per 2-5 prodotti
+      return '#eab308';  // Giallo per 2-5 prodotti
     } else {
-      return 'bg-green-500';  // Verde per più di 5 prodotti
-    }
-  }
-
-  getArrowColor(products: number): string {
-    if (products === 1) {
-      return 'blue-700';  // Freccia blu per 1 prodotto
-    } else if (products <= 5) {
-      return 'yellow-700';  // Freccia gialla per 2-5 prodotti
-    } else {
-      return 'green-700';  // Freccia verde per più di 5 prodotti
+      return '#22c55e';  // Verde per più di 5 prodotti
     }
   }
 
