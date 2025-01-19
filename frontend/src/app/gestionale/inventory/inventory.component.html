@@ -50,7 +50,7 @@
         <td class="border border-gray-300 p-2 text-center">
           <button
             class="text-blue-500 hover:text-blue-700"
-            (click)="onEditItem(item.id)"
+            (click)="onEditItem(item.code)"
           >
             Modifica
           </button>
@@ -89,6 +89,7 @@
     [product]="editingItem"
     (save)="onSaveEdit($event)"
     (cancel)="onCancelEdit()"
+    (productUpdated)="loadItems()"
   ></app-edit-product-dialog>
 
   <!-- Modale per Aggiunta Prodotto -->

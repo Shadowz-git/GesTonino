@@ -48,7 +48,7 @@ export class InventoryComponent implements OnInit {
       next: (products) => {
         // Aggiungi la proprietà `selected` a ogni prodotto
         this.items = products.map(product => ({ ...product, selected: false }));
-        console.log("items", this.items);
+        console.log("items", this.items, "products", products);
         this.filteredItems = [...this.items];
         this.selectedItemsCount = this.filteredItems.length;
         this.updatePagination();
@@ -58,7 +58,6 @@ export class InventoryComponent implements OnInit {
       }
     });
   }
-
 
   updatePagination(): void {
     // Aggiorna la lista paginata
@@ -120,12 +119,10 @@ export class InventoryComponent implements OnInit {
       return;
     }
 
-    // Estrai i codici dei prodotti selezionati
     const selectedCodes = selectedProducts.map(product => product.code);
 
     console.log('Codici dei prodotti selezionati:', selectedCodes); // Debug
 
-    // Ottieni l'activityId dal localStorage
     const activityId = localStorage.getItem("activity_id");
 
     if (!activityId) {
@@ -133,11 +130,10 @@ export class InventoryComponent implements OnInit {
       return;
     }
 
-    // Chiama il servizio per eliminare i prodotti selezionati
     this.productService.deleteProductsByCodesAndActivityId(selectedCodes, activityId).subscribe({
       next: () => {
         console.log('Prodotti eliminati con successo');
-        this.loadItems(); // Ricarica la lista dei prodotti
+        this.loadItems();
       },
       error: (error) => {
         console.error('Errore durante l\'eliminazione dei prodotti', error);
@@ -160,8 +156,8 @@ export class InventoryComponent implements OnInit {
     this.addingItem = false;
   }
 
-  onEditItem(itemId: number): void {
-    this.editingItem = this.items.find(item => item.id === itemId) || null;
+  onEditItem(itemCode: string): void {
+    this.editingItem = this.items.find(item => item.code === itemCode) || null;
   }
 
   onSaveEdit(updatedItem: Item): void {
