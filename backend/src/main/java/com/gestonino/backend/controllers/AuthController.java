@@ -78,7 +78,7 @@ public class AuthController {
 
         //Il problema dell'avviso di errore ma della corretta esecuzione della query è dato dal modo sbagliato in cui mandavamo
         //la response, noi lo mandavamo come testo normale, però adesso con la mappa viene gestito come un JSON in modo che
-        //riesca ad interpretarlo il frontend
+        //riesca a interpretarlo il frontend
         // OKE, CAPIT
         try {
             authService.registerUser(request.getEmail(), request.getPassword());

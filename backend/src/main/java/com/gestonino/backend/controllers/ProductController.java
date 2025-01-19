@@ -2,6 +2,7 @@ package com.gestonino.backend.controllers;
 import com.gestonino.backend.model.dao.ProductRepository;
 import com.gestonino.backend.model.services.ProductService;
 import com.gestonino.backend.model.types.Product;
+import com.gestonino.backend.model.types.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,17 +77,14 @@ public class ProductController {
     }
 
     @GetMapping("/searchProducts")
-    public ResponseEntity<List<Product>> searchProducts(
+    public ResponseEntity<List<ProductResponse>> searchProducts(
             @RequestParam(required = false) String query,
             @RequestParam(required = false) Double lat,
             @RequestParam(required = false) Double lng,
             @RequestParam(required = false) Double radius,
-            @RequestParam(required = false) List<String> categories,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice) {
-
-        List<Product> products = productService.searchProducts(query, lat, lng, radius, categories, minPrice, maxPrice);
-        System.out.println("Prodottelli: " + products);
+        List<ProductResponse> products = productService.searchProducts(query, lat, lng, radius, minPrice, maxPrice);
         return ResponseEntity.ok(products);
     }
 
@@ -119,6 +117,17 @@ public class ProductController {
         counts.put("lowStockCount", lowStockCount);
         counts.put("outOfStockCount", outOfStockCount);
 
+        return new ResponseEntity<>(counts, HttpStatus.OK);
+    }
+
+    @GetMapping("/getTotalProdAndTotalPrice")
+    public ResponseEntity<Map<String, Long>> getTotalProdAndTotalPrice(@RequestParam Long activity_id) {
+        System.out.println("getTatoalProd"+ activity_id);
+        long totalProd = productRepository.sumQuantityByIdActivity(activity_id);
+        long totalPrice= productRepository.sumTotalByIdActivity(activity_id);
+        Map<String, Long> counts = new HashMap<>();
+        counts.put("totalProd", totalProd);
+        counts.put("totalPrice", totalPrice);
         return new ResponseEntity<>(counts, HttpStatus.OK);
     }
 
