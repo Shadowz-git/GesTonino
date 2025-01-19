@@ -163,6 +163,7 @@ export class HomeComponent implements OnInit {
   }
 
   public viewDetails(product: Product) {
+    this.range = 2;
     if (product.activityLat && product.activityLng) {
       this.mapService.setCenter(product.activityLat, product.activityLng);
       this.mapService.setZoom(this.mapService.getZoomLevel(this.range));
