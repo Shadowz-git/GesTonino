@@ -17,25 +17,22 @@
       <div class="grid grid-cols-3 divide-x divide-gray-200">
         <!-- Nuovi -->
         <div class="p-4 text-center">
-          <p class="text-blue-500 text-4xl font-bold">40</p>
+          <p class="text-blue-500 text-4xl font-bold">{{counter}}</p>
           <p class="text-gray-600 text-sm">Quantità</p>
           <p class="text-sm text-gray-500 mt-2">Nuovi prodotti aggiunti</p>
-          <a href="#" class="text-blue-500 underline text-sm">Clicca qui per visualizzarli</a>
         </div>
 
         <!-- Quasi Finiti -->
         <div class="p-4 text-center">
-          <p class="text-yellow-500 text-4xl font-bold">10</p>
+          <p class="text-yellow-500 text-4xl font-bold">{{lowStockCount}}</p>
           <p class="text-gray-600 text-sm">Quantità</p>
           <p class="text-sm text-gray-500 mt-2">Prodotti in esaurimento</p>
-          <a href="#" class="text-yellow-500 underline m-auto text-sm">Clicca qui per visualizzarli</a>
         </div>
         <!-- Non Disponibili -->
         <div class="p-4 text-center">
-          <p class="text-red-500 text-4xl font-bold">3</p>
+          <p class="text-red-500 text-4xl font-bold">{{outOfStockCount}}</p>
           <p class="text-gray-600 text-sm">Quantità</p>
           <p class="text-sm text-gray-500 mt-2">Prodotti sono finiti</p>
-          <a href="#" class="text-red-500 underline text-sm m-auto">Clicca qui per visualizzarli</a>
         </div>
       </div>
     </div>
