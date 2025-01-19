@@ -108,19 +108,57 @@ export class MapService {
   createMarkerHtml(products: number, name: string): string {
     const backgroundColor = this.getBackgroundColor(products);
 
+    // Impostiamo una larghezza fissa per il rettangolo
+    const rectWidth = 200;
+
+    // Funzione che avvolge il testo su più righe
+    const wrapText = (text: string, maxWidth: number, fontSize: number): string => {
+      const words = text.split(' ');
+      let lines = [];
+      let currentLine = '';
+
+      const getTextWidth = (line: string) => {
+        const canvas = document.createElement('canvas');
+        const context: CanvasRenderingContext2D | any = canvas.getContext('2d');
+        context.font = `${fontSize}px Arial`;
+        return context.measureText(line).width;
+      };
+
+      words.forEach(word => {
+        const newLine = currentLine ? `${currentLine} ${word}` : word;
+        if (getTextWidth(newLine) < maxWidth) {
+          currentLine = newLine;
+        } else {
+          lines.push(currentLine);
+          currentLine = word;
+        }
+      });
+
+      if (currentLine) {
+        lines.push(currentLine);
+      }
+
+      return lines.map((line, index) => `<tspan x="50" y="${30 + index * fontSize}" font-family="Arial" font-size="${fontSize}" fill="white">${line}</tspan>`).join('');
+    };
+
+    // Ora utilizziamo la funzione wrapText per il nome dell'attività
+    const wrappedName = wrapText(name, rectWidth - 60, 16); // Considera il margine laterale di 60px
+
     return `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 70" class="relative" width="200" height="70">
-      <!-- Rettangolo del marker -->
-      <rect x="0" y="0" width="200" height="60" rx="10" ry="10" fill="${backgroundColor}" />
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${rectWidth} 70" width="${rectWidth}" height="70">
+      <!-- Rettangolo del marker con il colore di sfondo -->
+      <rect x="0" y="0" width="${rectWidth}" height="60" rx="10" ry="10" fill="${backgroundColor}" />
 
       <!-- Numero di prodotti -->
       <text x="10" y="30" font-family="Arial" font-size="20" fill="white" font-weight="bold">${products}</text>
 
-      <!-- Nome dell'attività -->
-      <text x="50" y="30" font-family="Arial" font-size="16" fill="white">${name}</text>
+      <!-- Nome dell'attività con text wrapping -->
+      <text>
+        ${wrappedName}
+      </text>
 
       <!-- Freccia in basso (triangolo) -->
-      <polygon points="90,60 100,70 110,60" fill="${backgroundColor}" />
+      <polygon points="90,60 100,70 110,60" fill="${backgroundColor}"/>
     </svg>
   `;
   }
@@ -143,6 +181,10 @@ export class MapService {
     this.map.scrollWheelZoom = true;
     this.map.doubleClickZoom = true;
     this.map.boxZoom = true;
+  }
+
+  enableDragging(): void {
+    this.map.dragging = true;
   }
 
   // Disabilita le opzioni (quando si chiude il dialogo)
