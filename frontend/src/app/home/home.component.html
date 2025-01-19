@@ -1,11 +1,12 @@
+<body>
 <main class="flex flex-col h-full min-h-screen max-w-full w-full bg-backgroundBlue">
   <app-header class="flex-initial"/>
 
   <!-- Contenitore superiore (mappa e login) -->
-  <div id="homepage" class="h-full flex flex-row bg-backgroundBlue py-1">
+  <div id="homepage" class="h-full flex flex-row bg-backgroundBlue py-1 grow ">
     <!-- CERCA PRODOTTI -->
     <div id="map" class="w-[49.95%] bg-backgroundBlue rounded-lg m-2 wrapper">
-      <div id="mapComponent" class="w-full h-full backgroundMap">
+      <div id="mapComponent" class=" w-full h-full backgroundMap">
         <!-- Mappa di sfondo -->
         <app-map
           [latitude]="lat"
@@ -79,6 +80,9 @@
   </div>
 
 
-  <app-footer></app-footer>
+
 </main>
+<app-footer></app-footer>
+</body>
+
 
