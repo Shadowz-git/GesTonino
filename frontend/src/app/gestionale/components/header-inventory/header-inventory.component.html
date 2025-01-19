@@ -1,0 +1,49 @@
+<div class="flex flex-wrap items-center justify-between bg-white p-4 shadow-md rounded">
+  <!-- Search Bar -->
+  <div class="flex items-center space-x-2 w-full md:w-1/3">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (ngModelChange)="onSearch($event)"
+      placeholder="Cerca per nome o codice..."
+      class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
+  <!-- Items Per Page -->
+  <div class="flex items-center space-x-2 w-full md:w-1/3 justify-center mt-2 md:mt-0">
+    <label for="itemsPerPageSelect" class="text-sm font-medium">Elementi per pagina:</label>
+    <select
+      [(ngModel)]="itemsPerPage"
+      (ngModelChange)="onItemsPerPageChange($event)"
+      id="itemsPerPageSelect"
+      class="border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      <option *ngFor="let option of itemsPerPageOptions" [value]="option">{{ option }}</option>
+    </select>
+  </div>
+
+  <!-- Actions -->
+  <div class="flex items-center space-x-4 w-full md:w-1/3 justify-end mt-2 md:mt-0">
+    <button
+      *ngIf="selectedCount > 0"
+      (click)="deleteSelected.emit()"
+      class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+    >
+      Elimina Selezionati
+    </button>
+    <button
+      *ngIf="selectedCount > 0"
+      (click)="toggleSelectAll()"
+      class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md"
+    >
+      {{ isAllSelected ? 'Deseleziona Tutti' : 'Seleziona Tutti' }}
+    </button>
+    <button
+      (click)="onAddProduct()"
+      class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md"
+    >
+      Aggiungi Prodotto
+    </button>
+  </div>
+</div>

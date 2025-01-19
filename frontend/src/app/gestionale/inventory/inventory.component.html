@@ -1,6 +1,105 @@
-<div class="min-h-screen bg-gray-100 p-6">
-  <h1 class="text-2xl font-bold mb-6">Gestione Prodotti</h1>
-  <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-    <app-item *ngFor="let product of products" [product]="product" (delete)="onDelete($event)"></app-item>
+<div class="container mx-auto p-4">
+
+  <!-- Header -->
+  <app-header-inventory
+    [searchQuery]="searchQuery"
+    [selectedCount]="selectedItemsCount"
+    (search)="onSearch($event)"
+    (selectAll)="toggleSelectAll()"
+    (deleteSelected)="deleteSelected()"
+    (itemsPerPageChange)="onItemsPerPageChange($event)"
+    (addProduct)="addItem()"
+  ></app-header-inventory>
+
+  <!-- Tabella -->
+  <div class="overflow-x-auto mt-4">
+    <table class="table-auto w-full border-collapse border border-gray-300">
+      <thead>
+      <tr class="bg-gray-100 text-left">
+        <th class="border border-gray-300 p-2 w-10">
+          <input
+            type="checkbox"
+            [checked]="isAllSelected"
+            (change)="toggleSelectAll()"
+          />
+        </th>
+        <th class="border border-gray-300 p-2">Codice</th>
+        <th class="border border-gray-300 p-2">Nome</th>
+        <th class="border border-gray-300 p-2">Categoria</th>
+        <th class="border border-gray-300 p-2">Quantità</th>
+        <th class="border border-gray-300 p-2">Prezzo</th>
+        <th class="border border-gray-300 p-2">Sconto</th>
+        <th class="border border-gray-300 p-2 w-20">Azione</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr
+        *ngFor="let item of paginatedItems"
+        [class.bg-gray-50]="selectedItems.has(item.id)"
+      >
+        <td class="border border-gray-300 p-2 text-center">
+          <input
+            type="checkbox"
+            [checked]="selectedItems.has(item.id)"
+            (change)="toggleSelection(item.id)"
+          />
+        </td>
+        <td class="border border-gray-300 p-2">{{ item.code }}</td>
+        <td class="border border-gray-300 p-2">{{ item.name }}</td>
+        <td class="border border-gray-300 p-2">{{ item.category }}</td>
+        <td class="border border-gray-300 p-2">{{ item.quantity }}</td>
+        <td class="border border-gray-300 p-2">{{ item.price | currency:'EUR' }}</td>
+        <td class="border border-gray-300 p-2">{{ item.discount }}%</td>
+        <td class="border border-gray-300 p-2 text-center">
+          <button
+            class="text-blue-500 hover:text-blue-700"
+            (click)="onEditItem(item.id)"
+          >
+            Modifica
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
+
+  <!-- Paginazione -->
+  <div class="flex justify-between items-center mt-4">
+    <button
+      class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+      [disabled]="currentPage === 1"
+      (click)="previousPage()"
+    >
+      Precedente
+    </button>
+
+    <span class="text-sm text-gray-600">
+      Pagina {{ currentPage }} di {{ totalPages }}
+    </span>
+
+    <button
+      class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+      [disabled]="currentPage === totalPages"
+      (click)="nextPage()"
+    >
+      Successiva
+    </button>
+  </div>
+
+  <!-- Modale per Modifica Prodotto -->
+  <app-edit-product-dialog
+    *ngIf="editingItem"
+    [product]="editingItem"
+    (save)="onSaveEdit($event)"
+    (cancel)="onCancelEdit()"
+  ></app-edit-product-dialog>
+
+  <!-- Modale per Aggiunta Prodotto -->
+  <app-add-product-dialog
+    *ngIf="addingItem"
+    (save)="onSaveAdd($event)"
+    (cancel)="onCancelAdd()"
+    (productAdded)="loadItems()"
+  ></app-add-product-dialog>
+
 </div>

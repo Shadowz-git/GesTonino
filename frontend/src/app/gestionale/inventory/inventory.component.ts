@@ -1,28 +1,160 @@
-import { Component } from '@angular/core';
-import {ItemComponent} from '../components/item/item.component';
-import {NgForOf} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import { Item } from '../models/item.model';
+import {HeaderInventoryComponent} from '../components/header-inventory/header-inventory.component';
+import {FormsModule} from '@angular/forms';
+import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
+import {EditProductDialogComponent} from '../components/edit-product-dialog/edit-product-dialog.component';
+import {AddProductDialogComponent} from '../components/add-product-dialog/add-product-dialog.component';
+import {FilterService} from '../../services/filter.service';
+import {ProductService} from '../../services/product.service';
 
 @Component({
   selector: 'app-inventory',
-  imports: [
-    ItemComponent,
-    NgForOf
-  ],
   templateUrl: './inventory.component.html',
-  styleUrl: './inventory.component.css'
+  imports: [
+    HeaderInventoryComponent,
+    FormsModule,
+    NgForOf,
+    CurrencyPipe,
+    EditProductDialogComponent,
+    AddProductDialogComponent,
+    NgIf
+  ],
+  styleUrls: ['./inventory.component.css']
 })
-// TODO: Fare in modo che quando si selezionano più prodotti (con le checkbox) puoi eliminarli tutti o
-//  mettere uno sconto uguale per tutti
-// TODO: Fare che gli item siano in una tabella con ogni item una checkbox assegnata
+export class InventoryComponent implements OnInit {
+  items: Item[] = []; // Lista completa degli item
+  filteredItems: Item[] = []; // Lista filtrata
+  paginatedItems: Item[] = []; // Elementi per pagina
+  selectedItems: Set<number> = new Set<number>(); // ID degli item selezionati
+  selectedItemsCount: number = 0;
+  currentPage = 1; // Pagina corrente
+  itemsPerPage = 10; // Elementi per pagina
+  totalPages = 1; // Numero totale di pagine
 
-export class InventoryComponent {
-  products = [
-    {name: 'Prodotto 1', quantity: 5, description: 'Descrizione prodotto 1', price: 20.00, code: '12345'},
-    {name: 'Prodotto 2', quantity: 10, description: 'Descrizione prodotto 2', price: 15.00, code: '67890'},
-    // Aggiungi altri prodotti qui
-  ];
+  searchQuery = ''; // Query di ricerca
+  editingItem: Item | null = null; // Item in modifica
+  addingItem = false; // Stato per aggiunta prodotto
 
-  onDelete(productCode: string) {
-    this.products = this.products.filter(p => p.code !== productCode);
+  constructor(private filterService: FilterService, private productService: ProductService,) {}
+
+  ngOnInit(): void {
+    this.loadItems();
+  }
+
+  loadItems(): void {
+    console.log("Sono in loaditems")
+    // Carica gli item e imposta la paginazione
+// Carica gli item dal backend usando il servizio
+    this.productService.getAllProducts().subscribe({
+      next: (products) => {
+        this.items = products;
+        console.log("items",this.items);
+        // Imposta gli item dal backend
+        this.filteredItems = [...this.items]; // Filtra e aggiorna gli item
+        this.selectedItemsCount = this.filteredItems.length; // Conta gli item filtrati
+        this.updatePagination(); // Aggiorna la paginazione
+      },
+      error: (err) => {
+        console.error('Errore nel caricare gli item:', err); // Gestisci eventuali errori
+      }
+    });
+
+  }
+
+  updatePagination(): void {
+    // Aggiorna la lista paginata
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedItems = this.filteredItems.slice(startIndex, endIndex);
+    this.totalPages = Math.ceil(this.filteredItems.length / this.itemsPerPage);
+  }
+
+  onItemsPerPageChange(newItemsPerPage: number): void {
+    this.itemsPerPage = newItemsPerPage;
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagination();
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
+    }
+  }
+
+  onSearch(query: string): void {
+    this.searchQuery = query;
+    this.filteredItems = this.filterService.applyAdvancedFilters(this.items, query);
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  toggleSelectAll(): void {
+    if (this.selectedItems.size === this.filteredItems.length) {
+      this.selectedItems.clear();
+    } else {
+      this.filteredItems.forEach(item => this.selectedItems.add(item.id));
+    }
+  }
+
+  toggleSelection(itemId: number): void {
+    if (this.selectedItems.has(itemId)) {
+      this.selectedItems.delete(itemId);
+    } else {
+      this.selectedItems.add(itemId);
+    }
+  }
+
+  deleteSelected(): void {
+    this.items = this.items.filter(item => !this.selectedItems.has(item.id));
+    this.filteredItems = [...this.items];
+    this.selectedItems.clear();
+    this.updatePagination();
+  }
+
+  addItem(): void {
+    this.addingItem = true;
+  }
+
+  onSaveAdd(newItem: Item): void {
+    this.items.push(newItem);
+    this.filteredItems = [...this.items];
+    this.addingItem = false;
+    this.updatePagination();
+  }
+
+  onCancelAdd(): void {
+    this.addingItem = false;
+  }
+
+  onEditItem(itemId: number): void {
+    this.editingItem = this.items.find(item => item.id === itemId) || null;
+  }
+
+  onSaveEdit(updatedItem: Item): void {
+    const index = this.items.findIndex(item => item.id === updatedItem.id);
+    if (index !== -1) {
+      this.items[index] = updatedItem;
+      this.filteredItems = [...this.items];
+    }
+    this.editingItem = null;
+    this.updatePagination();
+  }
+
+  onCancelEdit(): void {
+    this.editingItem = null;
+  }
+
+  get isAllSelected(): boolean {
+    return this.selectedItems.size === this.filteredItems.length;
   }
 }
+

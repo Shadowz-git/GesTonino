@@ -1,2 +1,15 @@
-<p>gestionale works!</p>
-<router-outlet></router-outlet>
+<div class="bg-gray-500 flex h-screen">
+  <!-- Sidebar -->
+  <aside id="sidebar-multi-level-sidebar" class="w-64 h-full bg-gray-800 text-white" aria-label="Sidebar">
+    <app-sidebar />
+  </aside>
+
+  <!-- Contenuto principale -->
+  <div class="flex-1 flex flex-col text-lg bg-white shadow-lg">
+    <!-- Elemento sopra la dashboard -->
+    <!-- Dashboard -->
+    <div class="flex-1 overflow-y-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

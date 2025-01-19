@@ -5,20 +5,50 @@
     <!-- CERCA PRODOTTI -->
     <div id="map" class="w-[49.95%] bg-backgroundBlue rounded-lg m-2 wrapper">
       <div id="mapComponent" class="w-full h-full backgroundMap">
-        <app-map />
+      <!-- Mappa di sfondo -->
+        <app-map
+          [latitude]="lat"
+          [longitude]="lng"
+          [range]="range"
+          [activities]="activities"
+          class="inset-0 z-0 h-[500px]"
+        ></app-map>
       </div>
-      <div id="formSearch" class="bg-white rounded-md p-2 mt-10 mx-5 border border-black onMapElement">
-        <label for="basicSearch">Ricerca Prodotto</label>
-        <form id="basicSearch">
-          <div class="flex flex-row">
-            <input id="searchContent" type="text" placeholder="Chi boi?"/>
-            <button type="submit">Ricerca Avanzata</button>
-          </div>
-          <div class="flex justify-center">
-            <button type="submit" class="mt-2">Cerca Prodotto</button>
-          </div>
-        </form>
-      </div>
+
+      <!-- Barra di ricerca -->
+        <div id="formSearch" class="bg-white rounded-md p4 mt-10 mx-5 border shadow-md border-black onMapElement">
+          <app-product-research
+            [city]="city"
+            [lat]="lat"
+            [lng]="lng"
+            [range]="range"
+            [productQuery]="productQuery"
+            [filters]="filters"
+            (cityChange)="onCityChange($event)"
+            (rangeChange)="onRangeChange($event)"
+            (productSearchChange)="onProductSearchChange($event)"
+            (filtersChange)="onFiltersChange($event)"
+            (search)="onSearch()"
+          ></app-product-research>
+        <div *ngIf="results.length" class="mt-6">
+          <h3 class="text-lg font-bold text-gray-700">Risultati della ricerca</h3>
+          <ul class="mt-4 space-y-2">
+            <li *ngFor="let result of results" class="p-4 bg-white shadow rounded flex justify-between items-center">
+              <div>
+                <h4 class="font-bold">{{ result.name }}</h4>
+                <p class="text-sm text-gray-600">Categoria: {{ result.category }}</p>
+                <p class="text-sm text-gray-600">Prezzo: {{ result.price | currency }}</p>
+              </div>
+              <button
+                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                (click)="viewDetails(result)"
+              >
+                Dettagli
+              </button>
+            </li>
+          </ul>
+        </div>
+    </div>
     </div>
     <!-- LOGIN -->
     <div class="w-[0.1%] rounded-lg bg-white "></div>

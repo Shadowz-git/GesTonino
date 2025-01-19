@@ -1,0 +1,41 @@
+/* Impostazioni per il comportamento responsivo della tabella */
+@media screen and (max-width: 640px) {
+  .table-auto {
+    display: block;
+    overflow-x: auto;
+  }
+
+  /* Rendi la tabella scrollabile su mobile */
+  .table-auto thead {
+    display: none;
+  }
+
+  .table-auto tbody {
+    display: block;
+  }
+
+  .table-auto tr {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .table-auto td {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 12px;
+  }
+
+  .table-auto td:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+
+  .table-auto td span {
+    font-weight: bold;
+  }
+
+  .table-auto td .currency {
+    text-align: right;
+  }
+}
