@@ -16,13 +16,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE " +
             "(:query IS NULL OR p.name LIKE %:query%) AND " +
-            "(:validCategories IS NULL OR p.category IN :validCategories) AND " +
             "(:validMinPrice IS NULL OR p.price >= :validMinPrice) AND " +
             "(:validMaxPrice IS NULL OR p.price <= :validMaxPrice) AND " +
             "p.activity.id IN :activityIds")
     List<Product> findProductsByActivityIds(
             @Param("query") String query,
-            @Param("validCategories") List<String> validCategories,
             @Param("validMinPrice") Double validMinPrice,
             @Param("validMaxPrice") Double validMaxPrice,
             @Param("activityIds") List<Long> activityIds
@@ -46,4 +44,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     long countByActivityIdAndQuantityGreaterThanEqualAndQuantityLessThan(Long activityId, int minQuantity, int maxQuantity);
     long countByActivityIdAndQuantity(Long activityId, int quantity);
+
+    @Query("SELECT SUM(i.quantity) FROM Product i WHERE i.activity.id = :activity_id")
+    Long sumQuantityByIdActivity(@Param("activity_id") Long idActivity);
+
+
+    //TODO: Totale va moltiplicato in base alla quantità
+    @Query("SELECT SUM(i.price) FROM Product i WHERE i.activity.id = :activity_id")
+    Long sumTotalByIdActivity(@Param("activity_id") Long idActivity);
+
+
 }
