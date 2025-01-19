@@ -53,13 +53,13 @@ public class AuthController {
             List<String> stringList = new ArrayList<>();
 
             // Trasforma i risultati in stringhe
-            for (Object[] result : activity_idname) {
-                stringList.add(result[0].toString());
-                stringList.add(result[1].toString());
-            }
-            System.out.println("activity in base a utente di id"+user_id+" Attività con id:"+stringList.getFirst()+" Nome:"+stringList.getLast());
             responseMap.put("user_id", user_id);
             if(!activity_idname.isEmpty()) {
+                for (Object[] result : activity_idname) {
+                    stringList.add(result[0].toString());
+                    stringList.add(result[1].toString());
+                }
+
                 responseMap.put("activity_id", stringList.getFirst());
                 responseMap.put("activity_name", stringList.getLast());
             }
