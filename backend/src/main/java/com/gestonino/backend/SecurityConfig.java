@@ -16,8 +16,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable) // Disabilita CSRF per i test
+        http.csrf(AbstractHttpConfigurer::disable) // Disabilita CSRF per i test
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
         return http.build();
     }
