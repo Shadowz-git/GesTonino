@@ -107,13 +107,15 @@ export class MapService {
   // Funzione per generare il codice HTML del marker
   createMarkerHtml(products: number, name: string): string {
     const backgroundColor = this.getBackgroundColor(products);
+    const arrowColor = this.getArrowColor(products);
 
     return `
-      <div class="flex items-center justify-between ${backgroundColor} text-white p-2 rounded-md shadow-lg">
-        <span class="font-bold text-lg">${products}</span>
-        <span class="ml-2 text-sm">${name}</span>
-      </div>
-    `;
+    <div class="flex items-center justify-between ${backgroundColor} text-white p-2 rounded-md shadow-lg">
+      <span class="font-bold text-lg">${products}</span>
+      <span class="ml-2 text-sm">${name}</span>
+    </div>
+    <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-${arrowColor} mx-auto"></div>
+  `;
   }
 
   // Funzione per determinare il colore di sfondo in base al numero di prodotti
@@ -124,6 +126,16 @@ export class MapService {
       return 'bg-yellow-500';  // Giallo per 2-5 prodotti
     } else {
       return 'bg-green-500';  // Verde per più di 5 prodotti
+    }
+  }
+
+  getArrowColor(products: number): string {
+    if (products === 1) {
+      return 'blue-700';  // Freccia blu per 1 prodotto
+    } else if (products <= 5) {
+      return 'yellow-700';  // Freccia gialla per 2-5 prodotti
+    } else {
+      return 'green-700';  // Freccia verde per più di 5 prodotti
     }
   }
 
