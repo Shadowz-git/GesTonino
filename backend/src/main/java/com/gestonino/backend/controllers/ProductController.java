@@ -33,7 +33,9 @@ public class ProductController {
     @GetMapping("/getAllProducts")
     public ResponseEntity<List<Map<String, Object>>> getAllProduct(@RequestParam String activity_id) {
         System.out.println("Sono qua, activity_id: " + activity_id);
-
+        if(activity_id == null || activity_id.equals("undefined")) {
+            return ResponseEntity.badRequest().build();
+        }
         // Trova i prodotti per activity_id
         List<Product> products = productRepository.findByActivityId(Long.valueOf(activity_id));
 
@@ -108,6 +110,9 @@ public class ProductController {
 
     @GetMapping("/getProductCounts")
     public ResponseEntity<Map<String, Long>> getProductCounts(@RequestParam Long activity_id) {
+        if(activity_id == null) {
+            return ResponseEntity.badRequest().build();
+        }
         // Conteggio prodotti con quantità < 5 per l'activity_id specificato
         long lowStockCount = productRepository.countByActivityIdAndQuantityGreaterThanEqualAndQuantityLessThan(activity_id, 1, 5);
 
@@ -124,11 +129,16 @@ public class ProductController {
 
     @GetMapping("/getTotalProdAndTotalPrice")
     public ResponseEntity<Map<String, Long>> getTotalProdAndTotalPrice(@RequestParam Long activity_id) {
+        if(activity_id == null) {
+            return ResponseEntity.badRequest().build();
+        }
         System.out.println("getTatoalProd"+ activity_id);
         long totalProd = productRepository.sumQuantityByIdActivity(activity_id);
         long totalPrice = productRepository.calculateTotalByActivityId(activity_id);
         Map<String, Long> counts = new HashMap<>();
 
+        counts.put("totalProd", totalProd);
+        counts.put("totalPrice", totalPrice);
         return new ResponseEntity<>(counts, HttpStatus.OK);
     }
 

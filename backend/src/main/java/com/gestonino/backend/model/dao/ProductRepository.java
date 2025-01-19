@@ -46,11 +46,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     long countByActivityIdAndQuantityGreaterThanEqualAndQuantityLessThan(Long activityId, int minQuantity, int maxQuantity);
     long countByActivityIdAndQuantity(Long activityId, int quantity);
 
-    @Query("SELECT SUM(i.quantity) FROM Product i WHERE i.activity.id = :activity_id")
+    @Query("SELECT COALESCE(SUM(i.quantity), 0) FROM Product i WHERE i.activity.id = :activity_id")
     Long sumQuantityByIdActivity(@Param("activity_id") Long idActivity);
 
-
-    @Query("SELECT COALESCE(SUM((p.price * p.quantity)), 0.0) " +
+    @Query("SELECT COALESCE(SUM((p.price * p.quantity)), 0) " +
             "FROM Product p " +
             "WHERE p.activity.id = :activityId")
     Long calculateTotalByActivityId(@Param("activityId") Long activityId);

@@ -9,7 +9,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/{x:[0-9a-zA-Z-_]+}")
+        registry.addViewController("/{x:[\\w\\-]+}")
+                .setViewName("forward:/index.html");
+        registry.addViewController("/{x:^(?!api$|assets$|.*\\..*$).*$}/**")
                 .setViewName("forward:/index.html");
     }
 }
