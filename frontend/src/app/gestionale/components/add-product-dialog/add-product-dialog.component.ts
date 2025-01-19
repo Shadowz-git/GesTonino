@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {HttpClient} from '@angular/common/http';
 import {NgForOf} from '@angular/common';
 import {CounterService} from '../../../services/counter.service';
+import {NotificationService} from '../../../services/notification.service';
 
 //TODO: Validare il form
 
@@ -25,7 +26,7 @@ export class AddProductDialogComponent implements OnInit {
   activities: any[] = []; // Popolato con l'API delle attività
 
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private counterService: CounterService) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private counterService: CounterService, private notificationService: NotificationService) {
     this.productForm = this.fb.group({
       id:Date.now(),
       name: "",
@@ -52,7 +53,6 @@ export class AddProductDialogComponent implements OnInit {
   loadCategories() {
     this.http.get('http://localhost:8080/api/categories').subscribe((data: any) => {
       this.categories = data;
-      console.log("data categories:", data)
     });
   }
 
@@ -81,18 +81,23 @@ export class AddProductDialogComponent implements OnInit {
       };
 
       // Log dei dati per debug
-      console.log('Dati inviati al backend:', productData);
       this.http.post('http://localhost:8080/api/products/addProduct', productData).subscribe({
         next: () =>{
-          alert('Prodotto aggiunto con successo!')
+          this.notificationService.addNotification({
+            title: 'Prodotto Aggiunto',
+            message: '',
+            type: 'success'
+          })
           this.productAdded.emit();
         },
         error: (err) => {
-          console.error(err);
-          alert('Errore nell\'aggiunta del prodotto');
+          this.notificationService.addNotification({
+            title: 'Errore',
+            message: 'Errore nell\'aggiunta del prodotto',
+            type: 'error'
+          })
         },
       });
-      console.log("SOno qua");
     }
   }
 }

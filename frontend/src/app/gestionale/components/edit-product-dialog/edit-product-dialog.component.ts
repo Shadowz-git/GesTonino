@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import { ProductService } from '../../../services/product.service';
 import { HttpClient } from '@angular/common/http';
 import {NgForOf, NgIf} from '@angular/common';
+import {NotificationService} from '../../../services/notification.service';
 
 @Component({
   selector: 'app-edit-product-dialog',
@@ -24,7 +25,8 @@ export class EditProductDialogComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private http: HttpClient,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private notificationService: NotificationService,
   ) {
     // Inizializza il form con valori predefiniti
     this.editForm = this.fb.group({
@@ -40,10 +42,14 @@ export class EditProductDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("Prodotto ricevuto:", this.product); // Debug
+    //console.log("Prodotto ricevuto:", this.product); // Debug
 
     if (!this.product) {
-      console.error("Il prodotto non è definito.");
+      this.notificationService.addNotification({
+        title: 'Attenzione',
+        message: 'Il prodotto non è completamente definito',
+        type: 'warning',
+      })
       return;
     }
 
@@ -59,8 +65,8 @@ export class EditProductDialogComponent implements OnInit {
       activity: localStorage.getItem('activity_id') || '',
     });
 
-    console.log("idcategoria: ", this.product.category?.id); // Debug
-    console.log("Form inizializzato:", this.editForm.value); // Debug
+    // console.log("idcategoria: ", this.product.category?.id); // Debug
+    // console.log("Form inizializzato:", this.editForm.value); // Debug
 
     // Carica le categorie
     this.loadCategories();
@@ -69,7 +75,7 @@ export class EditProductDialogComponent implements OnInit {
   loadCategories() {
     this.http.get('http://localhost:8080/api/categories').subscribe((data: any) => {
       this.categories = data;
-      console.log('Categorie caricate:', data);
+      // console.log('Categorie caricate:', data);
     });
   }
 
@@ -86,19 +92,25 @@ export class EditProductDialogComponent implements OnInit {
         activity: { id: localStorage.getItem('activity_id') },
       };
       const codeProd = this.editForm.getRawValue();
-      console.log(codeProd.code);
       const activityId: string | null = localStorage.getItem('activity_id');
-
-      console.log('Dati del prodotto aggiornato:', productData);
 
       // Invia i dati al backend
       this.productService.updateProduct(codeProd.code, activityId, productData).subscribe({
         next: (response) => {
           this.save.emit(this.editForm.getRawValue());
           this.productUpdated.emit();
+          this.notificationService.addNotification({
+            title: 'Prodotto aggiornato',
+            message: '',
+            type: 'success',
+          })
         },
         error: (error) => {
-          console.error('Errore durante l\'aggiornamento del prodotto', error);
+          this.notificationService.addNotification({
+            title: 'Errore',
+            message: 'Errore durante l\'aggiornamento del prodotto',
+            type: 'error'
+          })
         },
       });
     } else {
