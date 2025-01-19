@@ -110,13 +110,19 @@ export class MapService {
     const arrowColor = this.getArrowColor(products);
 
     return `
-    <div class="relative ${backgroundColor} text-white p-2 rounded-md shadow-lg flex items-center justify-between">
-      <span class="font-bold text-lg">${products}</span>
-      <span class="ml-2 text-sm">${name}</span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" class="relative" width="200" height="60">
+      <!-- Rettangolo del marker -->
+      <rect x="0" y="0" width="200" height="50" rx="10" ry="10" fill="${backgroundColor}" />
+
+      <!-- Numero di prodotti -->
+      <text x="10" y="30" font-family="Arial" font-size="20" fill="white" font-weight="bold">${products}</text>
+
+      <!-- Nome dell'attività -->
+      <text x="50" y="30" font-family="Arial" font-size="16" fill="white">${name}</text>
 
       <!-- Freccia in basso -->
-      <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-${arrowColor}"></div>
-    </div>
+      <polygon points="100,50 90,60 110,60" fill="${arrowColor}" />
+    </svg>
   `;
   }
 
