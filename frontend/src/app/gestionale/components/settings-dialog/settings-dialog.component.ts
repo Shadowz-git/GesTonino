@@ -67,12 +67,12 @@ export class SettingsDialogComponent implements OnDestroy {
 
   private isClickInsideContent = false;
 
-  onContentMouseDown(): void {
+  onContentMouseDown(event: any): void {
     this.isClickInsideContent = true;
   }
 
   @HostListener('document:mousedown', ['$event'])
-  onDocumentMouseDown(): void {
+  onDocumentMouseDown(event: any): void {
     if (!this.isClickInsideContent) {
       this.closeModal();
     }
