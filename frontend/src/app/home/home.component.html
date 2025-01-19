@@ -30,6 +30,7 @@
           (productSearchChange)="onProductSearchChange($event)"
           (filtersChange)="onFiltersChange($event)"
           (search)="onSearch()"
+          [itemFindedCount]="resultItemCount"
         ></app-product-research>
       </div>
     </div>
@@ -46,7 +47,7 @@
   </div>
 
   <!-- Risultati della ricerca (sotto la mappa e il login) -->
-  <div *ngIf="results.length" class="flex-grow m-3 border rounded-lg bg-white">
+  <div *ngIf="results.length" id="resultProducts" class="flex-grow m-3 border rounded-lg bg-white">
     <div class="m-3">
       <h3 class="text-lg font-bold text-gray-700">Risultati della ricerca</h3>
       <div class="m-3">

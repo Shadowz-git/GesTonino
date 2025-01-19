@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit {
   filters: ProductFilters = {}; // Filtri applicati
 
   // Risultati
+  resultItemCount: number = -1;
   results: Product[] = []; // Prodotti trovati
   activities: Activity[] = []; // Attività aggregate per la mappa
   private citySubject = new Subject<string>();
@@ -131,12 +132,21 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: (response: Product[]) => {
           this.results = response;
+          this.checkResults();
           this.aggregateBusinessesFromProducts(response);
         },
         error: () => {
           console.error('Errore nella ricerca dei prodotti');
         },
       });
+  }
+
+  checkResults() {
+    if (this.results.length === 0) {
+      this.resultItemCount = -1;
+    } else {
+      this.resultItemCount = this.results.length;
+    }
   }
 
   /**
@@ -161,7 +171,6 @@ export class HomeComponent implements OnInit {
     });
 
     this.activities = Object.values(activitiesMap);
-    console.log("Attività:",this.activities);
   }
 
   public viewDetails(product: Product) {

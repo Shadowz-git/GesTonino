@@ -3,11 +3,13 @@ import {FormsModule} from '@angular/forms';
 import {ProductFilterDialogComponent} from '../product-filter-dialog/product-filter-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ProductFilters} from '../../services/product.service';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-product-research',
   imports: [
     FormsModule,
+    NgIf,
   ],
   templateUrl: './product-research.component.html',
   styleUrl: './product-research.component.css'
@@ -19,6 +21,7 @@ export class ProductResearchComponent {
   @Input() range: number = 50;
   @Input() productQuery: string = '';
   @Input() filters: ProductFilters = {};
+  @Input() itemFindedCount: number = 0;
 
   @Output() cityChange = new EventEmitter<string>();
   @Output() rangeChange = new EventEmitter<number>();
