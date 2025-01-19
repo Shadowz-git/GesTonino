@@ -55,6 +55,13 @@ export class ProductService {
     return this.http.put(url, product);
   }
 
+  getProductCounts(): Observable<{ lowStockCount: number; outOfStockCount: number }> {
+    return this.http.get<{ lowStockCount: number; outOfStockCount: number }>(
+      `${this.apiUrl}/getProductCounts`
+    );
+  }
+
+
   deleteProductsByCodesAndActivityId(codes: string[], activityId: string | null): Observable<void> {
     const url = `${this.apiUrl}/deleteProducts?codes=${codes.join(',')}&activityId=${activityId}`;
     return this.http.delete<void>(url);
