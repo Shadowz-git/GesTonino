@@ -21,10 +21,9 @@ public class CategoryController {
 
 
         List<Category> categories = categoryRepository.findAll();
-        System.out.println("CATEGORIES"+categoryRepository.findAll());
+        System.out.println("CATEGORIES");
         for (Category category : categories) {
-
-            System.out.println("qua"+category);
+            System.out.println(category.getName());
         }
         return categoryRepository.findAll();
     }
