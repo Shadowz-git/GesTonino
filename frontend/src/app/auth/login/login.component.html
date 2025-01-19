@@ -1,17 +1,28 @@
-<div class="px-20">
-  <p class="text-3xl text-center pb-5">Sei già iscritto?<br>Inserisci le tue credenziali per accedere alla tua
-    area riservata</p>
-  <div class=" px-20">
-    <div class="px-8 border border-black rounded-md">
-      <form id="loginForm" (ngSubmit)="onSubmit()" class="p-2 ">
-        <label for="emailForm">Email</label>
-        <input id="emailForm" [(ngModel)]="email" name="email" placeholder="example@email.com" type="email"/>
-        <label for="passwordForm">Password</label>
-        <input id="passwordForm" [(ngModel)]="password" name="password" type="password" placeholder="Password"/>
-        <p class="text-center pt-3">
-          <button type="submit" class="">Sign in</button>
-        </p>
-      </form>
-    </div>
+<div class="flex flex-col  w-full mx-10 p-8 md:p-10 2xl:p-12 3xl:p-14 bg-[#ffffff] rounded-2xl shadow-xl">
+  <div class="flex flex-col justify-center mx-auto items-center gap-3 pb-4">
+    <!---->
+    <h1 class="text-3xl font-bold text-[backgroundBlue] my-auto">GesTonino</h1>
+
   </div>
+  <div class="text-base font-light text-[#6B7280] pb-8 mx-auto">Sei già iscritto? Inserisci le tue credenziali per accedere alla tua area riservata</div>
+  <!---->
+  <form class="flex flex-col" (ngSubmit)="onSubmit()">
+    <div class="pb-2">
+      <label for="email" class="block mb-2 text-sm font-medium text-[#111827]">Email</label>
+      <div class="relative text-gray-400"><span class="absolute inset-y-0 left-0 flex items-center p-1 pl-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg></span>
+        <input type="email" [(ngModel)]="email" name="email" id="email" class="pl-12 mb-2 bg-gray-50 text-gray-600 border focus:border-transparent border-gray-300 sm:text-sm rounded-lg ring ring-transparent focus:ring-1 focus:outline-none focus:ring-gray-400 block w-full p-2.5 rounded-l-lg py-3 px-4" placeholder="name@activity.com" autocomplete="off">
+      </div>
+    </div>
+    <div class="pb-6">
+      <label for="password" class="block mb-2 text-sm font-medium text-[#111827]">Password</label>
+      <div class="relative text-gray-400"><span class="absolute inset-y-0 left-0 flex items-center p-1 pl-3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-asterisk"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M12 8v8"></path><path d="m8.5 14 7-4"></path><path d="m8.5 10 7 4"></path></svg></span>
+        <input type="password" [(ngModel)]="password" name="password" id="password" placeholder="••••••••••" class="pl-12 mb-2 bg-gray-50 text-gray-600 border focus:border-transparent border-gray-300 sm:text-sm rounded-lg ring ring-transparent focus:ring-1 focus:outline-none focus:ring-gray-400 block w-full p-2.5 rounded-l-lg py-3 px-4" autocomplete="new-password">
+      </div>
+    </div>
+    <button type="submit" class="w-full text-[#FFFFFF] bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-500 hover:bg-gray-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-6">Login</button>
+    <div class="text-base font-light text-[#6B7280] text-center">Non gestisci ancora la tua attività con noi? <a routerLink="/auth/register" class="font-medium text-blue-500 hover:underline">Registrati Ora!</a>
+
+    </div>
+  </form>
+  <!---->
 </div>

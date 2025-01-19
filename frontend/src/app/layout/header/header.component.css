@@ -7,5 +7,5 @@ nav > a {
 }
 
 .activeButtonLink {
-  @apply text-sky-400 !important;
+  @apply text-blue-500 !important;
 }

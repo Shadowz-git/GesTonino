@@ -1,14 +1,13 @@
 
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
   <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-    <h2 class="text-2xl font-bold mb-6 text-center">Registrati</h2>
+    <h2 class="text-2xl font-bold mb-2 text-center">Registrati</h2>
+    <p class="text-gray-400 text-sm mb-6 text-center">Se hai già un Account o vuoi tornare alla Home <a routerLink="/" class="text-blue-500 hover:underline">Clicca qui</a></p>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-
-
       <div class="mb-4">
         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
         <input id="email" formControlName="email" type="email"
-               class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+               class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-500" />
         <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
           Inserisci un'email valida.
         </div>
@@ -17,7 +16,7 @@
       <div class="mb-4">
         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
         <input id="password" formControlName="password" type="password"
-               class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+               class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-500" />
         <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
           La password deve contenere almeno 6 caratteri.
         </div>
@@ -26,20 +25,17 @@
       <div class="mb-4">
         <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Conferma Password</label>
         <input id="confirmPassword" formControlName="confirmPassword" type="password"
-               class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+               class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-500" />
         <div *ngIf="registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched" class="text-red-500 text-sm mt-1">
           Le password non coincidono.
         </div>
       </div>
 
       <button type="submit" [disabled]="registerForm.invalid"
-              class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              class="w-full bg-gray-800 text-white py-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
         Registrati
       </button>
     </form>
-    <p class="mt-4 text-center text-sm text-gray-600">
-      Hai già un account? <a routerLink="/auth/login" class="text-blue-500 hover:underline">Accedi</a>
-    </p>
   </div>
 </div>
 
