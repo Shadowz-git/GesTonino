@@ -7,6 +7,7 @@ import {EditProductDialogComponent} from '../components/edit-product-dialog/edit
 import {AddProductDialogComponent} from '../components/add-product-dialog/add-product-dialog.component';
 import {FilterService} from '../../services/filter.service';
 import {ProductService} from '../../services/product.service';
+import {NotificationService} from '../../services/notification.service';
 
 @Component({
   selector: 'app-inventory',
@@ -36,25 +37,24 @@ export class InventoryComponent implements OnInit {
   editingItem: Item | null = null; // Item in modifica
   addingItem = false; // Stato per aggiunta prodotto
 
-  constructor(private filterService: FilterService, private productService: ProductService,) {}
+  constructor(private filterService: FilterService, private productService: ProductService,
+              private notificationService: NotificationService) {}
 
   ngOnInit(): void {
     this.loadItems();
   }
 
   loadItems(): void {
-    console.log("Sono in loaditems");
     this.productService.getAllProducts().subscribe({
       next: (products) => {
         // Aggiungi la proprietà `selected` a ogni prodotto
         this.items = products.map(product => ({ ...product, selected: false }));
-        console.log("items", this.items, "products", products);
         this.filteredItems = [...this.items];
         this.updateSelectedCount();
         this.updatePagination();
       },
       error: (err) => {
-        console.error('Errore nel caricare gli item:', err);
+        //console.error('Errore nel caricare gli item:', err);
       }
     });
   }
@@ -107,38 +107,49 @@ export class InventoryComponent implements OnInit {
 
   updateSelectedCount(): void {
     this.selectedItemsCount = this.filteredItems.filter(item => item.selected).length;
-    console.log("Items count",this.selectedItemsCount)
 
   }
   deleteSelected(): void {
     // Ottieni i prodotti selezionati
     const selectedProducts = this.filteredItems.filter(item => item.selected);
 
-    console.log('Prodotti selezionati:', selectedProducts); // Debug
+    // console.log('Prodotti selezionati:', selectedProducts); // Debug
 
     if (selectedProducts.length === 0) {
-      console.error('Nessun prodotto selezionato');
+      this.notificationService.addNotification({
+        type: 'warning',
+        title: 'Attenzione',
+        message: 'Nessun prodotto selezionato'
+        })
       return;
     }
 
     const selectedCodes = selectedProducts.map(product => product.code);
 
-    console.log('Codici dei prodotti selezionati:', selectedCodes); // Debug
+    // console.log('Codici dei prodotti selezionati:', selectedCodes); // Debug
 
     const activityId = localStorage.getItem("activity_id");
 
     if (!activityId) {
-      console.error('activityId non è definito');
+      // console.error('activityId non è definito');
       return;
     }
 
     this.productService.deleteProductsByCodesAndActivityId(selectedCodes, activityId).subscribe({
       next: () => {
-        console.log('Prodotti eliminati con successo');
+        this.notificationService.addNotification({
+          type: 'success',
+          message: '',
+          title: 'Eliminazione avvenuta con successo',
+        })
         this.loadItems();
       },
       error: (error) => {
-        console.error('Errore durante l\'eliminazione dei prodotti', error);
+        this.notificationService.addNotification({
+          type: 'error',
+          message: 'Errore durante l\'eliminazione dei prodotti',
+          title: 'Errore'
+        })
       }
     });
   }

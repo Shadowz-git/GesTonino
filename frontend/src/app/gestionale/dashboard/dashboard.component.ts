@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit {
         this.outOfStockCount = counts.outOfStockCount; // Aggiorna il conteggio dei prodotti con quantità = 0
       },
       error: (err) => {
-        console.error('Errore nel caricamento dei conteggi dei prodotti:', err);
+        // console.error('Errore nel caricamento dei conteggi dei prodotti:', err);
       },
     });
 
@@ -45,7 +45,7 @@ export class DashboardComponent implements OnInit {
         this.totalPrice = total.totalPrice;
       },
       error: (err) => {
-        console.error('Errore nel caricamento del totale dei prodotti');
+        // console.error('Errore nel caricamento del totale dei prodotti');
       }
     })
   }

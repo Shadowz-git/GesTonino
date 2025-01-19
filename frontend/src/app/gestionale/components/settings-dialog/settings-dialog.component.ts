@@ -7,6 +7,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import {MapService} from '../../../services/map.service';
 import {NgClass, NgIf} from '@angular/common';
 import {SettingsService} from '../../../services/settings.service';
+import {NotificationService} from '../../../services/notification.service';
 
 @Component({
   selector: 'app-settings-dialog',
@@ -33,7 +34,8 @@ export class SettingsDialogComponent implements OnDestroy {
 
   constructor(private locationService: LocationService,
               private settingsService: SettingsService,
-              private mapService: MapService) {
+              private mapService: MapService,
+              private notificationService: NotificationService) {
     // Definizione del form con i controlli e la validazione
     this.settingsForm = new FormGroup({
       activityName: new FormControl('', [Validators.required]),
@@ -52,7 +54,7 @@ export class SettingsDialogComponent implements OnDestroy {
           this.mapService.setZoom(17);
         },
         error: () => {
-          console.error('Errore nel recupero delle coordinate dalla città');
+          // console.error('Errore nel recupero delle coordinate dalla città');
         },
       });
     });
@@ -108,11 +110,19 @@ export class SettingsDialogComponent implements OnDestroy {
     // Chiamata al servizio per inviare i dati al backend
     this.settingsService.addActivity(formData).subscribe({
       next: () => {
-        alert('Operazione completata con successo!');
+        this.notificationService.addNotification({
+          type: 'success',
+          title: 'Operazione completata con successo',
+          message: ''
+        })
       },
       error: (err) => {
-        console.error('Errore durante l\'aggiunta dell\'attività:', err);
-        alert('Errore nell\'operazione, riprova.');
+        // console.error('Errore durante l\'aggiunta dell\'attività:', err);
+        this.notificationService.addNotification({
+          type: 'error',
+          title: 'Errore',
+          message: 'Errore durante l\'operazione di aggiunta, riprova.'
+        })
       },
     });
   }

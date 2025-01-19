@@ -42,7 +42,6 @@ export class ProductResearchComponent {
   // Metodo per gestire il cambio del range
   onRangeChange(newRange: number) {
     this.range = newRange;
-    console.log(newRange);
     this.rangeChange.emit(this.range); // Comunica il cambiamento al componente genitore
   }
 

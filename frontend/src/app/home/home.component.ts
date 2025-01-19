@@ -11,6 +11,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {MapService} from '../services/map.service';
 import {StopPropagationDirective} from '../stop-propagation.directive';
+import {NotificationService} from '../services/notification.service';
 
 @Component({
   selector: 'app-home',
@@ -47,6 +48,7 @@ export class HomeComponent implements OnInit {
     private locationService: LocationService,
     private productService: ProductService,
     private mapService: MapService,
+    private notificationService: NotificationService,
   ) {
     //Visto che veniva eseguita una query per ogni carattere
     //digitato, usando questo metodo la query viene eseguita una
@@ -61,7 +63,7 @@ export class HomeComponent implements OnInit {
           this.lng = lng;
         },
         error: () => {
-          console.error('Errore nel recupero delle coordinate dalla città');
+          // console.error('Errore nel recupero delle coordinate dalla città');
         },
       });
     });
@@ -83,7 +85,7 @@ export class HomeComponent implements OnInit {
         this.lng = coords.lng;
       },
       error: () => {
-        console.error('Errore nel recupero delle coordinate iniziali');
+        // console.error('Errore nel recupero delle coordinate iniziali');
       },
     });
   }
@@ -136,7 +138,12 @@ export class HomeComponent implements OnInit {
           this.aggregateBusinessesFromProducts(response);
         },
         error: () => {
-          console.error('Errore nella ricerca dei prodotti');
+          this.notificationService.addNotification({
+            type: 'error',
+            title: 'Errore',
+            message: 'Errore nella ricerca dei prodotti',
+          })
+          // console.error('Errore nella ricerca dei prodotti');
         },
       });
   }
