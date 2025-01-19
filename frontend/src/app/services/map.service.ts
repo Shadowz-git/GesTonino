@@ -110,11 +110,13 @@ export class MapService {
     const arrowColor = this.getArrowColor(products);
 
     return `
-    <div class="flex items-center justify-between ${backgroundColor} text-white p-2 rounded-md shadow-lg">
+    <div class="relative ${backgroundColor} text-white p-2 rounded-md shadow-lg flex items-center justify-between">
       <span class="font-bold text-lg">${products}</span>
       <span class="ml-2 text-sm">${name}</span>
+
+      <!-- Freccia in basso -->
+      <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-${arrowColor}"></div>
     </div>
-    <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-${arrowColor} mx-auto"></div>
   `;
   }
 
