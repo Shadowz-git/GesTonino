@@ -6,10 +6,10 @@ import {FooterComponent} from "../layout/footer/footer.component";
 import {ProductResearchComponent} from './product-research/product-research.component';
 import {LocationService} from '../services/location.service';
 import {Activity, Product, ProductFilters, ProductService} from '../services/product.service';
-import {MatDialog} from '@angular/material/dialog';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {MapService} from '../services/map.service';
 
 @Component({
   selector: 'app-home',
@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private locationService: LocationService,
     private productService: ProductService,
-    private dialog: MatDialog
+    private mapService: MapService,
   ) {
     //Visto che veniva eseguita una query per ogni carattere
     //digitato, usando questo metodo la query viene eseguita una
@@ -163,6 +163,9 @@ export class HomeComponent implements OnInit {
   }
 
   public viewDetails(product: Product) {
-    console.log(product);
+    if (product.activityLat && product.activityLng) {
+      this.mapService.setCenter(product.activityLat, product.activityLng);
+      this.mapService.setZoom(this.mapService.getZoomLevel(this.range));
+    }
   }
 }

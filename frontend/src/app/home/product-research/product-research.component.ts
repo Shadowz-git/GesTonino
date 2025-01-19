@@ -3,8 +3,6 @@ import {FormsModule} from '@angular/forms';
 import {ProductFilterDialogComponent} from '../product-filter-dialog/product-filter-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ProductFilters} from '../../services/product.service';
-import {LocationService} from '../../services/location.service';
-import {MapService} from '../../services/map.service';
 
 @Component({
   selector: 'app-product-research',
@@ -28,8 +26,7 @@ export class ProductResearchComponent {
   @Output() filtersChange = new EventEmitter<any>();
   @Output() search = new EventEmitter<void>();
 
-  constructor(private dialog: MatDialog,
-              private mapService: MapService) { }
+  constructor(private dialog: MatDialog) { }
 
   // Metodo per gestire il cambio della città
   onCityChange(newCity: string) {
@@ -68,6 +65,5 @@ export class ProductResearchComponent {
   // Metodo per inviare l'evento di ricerca al componente genitore
   onSearch() {
     this.search.emit();
-    this.mapService.enableDragging();
   }
 }

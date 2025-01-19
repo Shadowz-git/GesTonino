@@ -44,22 +44,12 @@ export class MapComponent implements OnChanges, OnInit {
   private updateMapView(): void {
     if (this.mapService.getMap()) {
       this.mapService.setCenter(this.latitude, this.longitude);
-      this.mapService.setZoom(this.getZoomLevel())
+      this.mapService.setZoom(this.mapService.getZoomLevel(this.range))
     }
   }
 
   private updateMarkers(): void {
     // Passa l'array di attività al MapService per aggiungere i marker
     this.mapService.updateMarkers(this.activities);
-  }
-
-  private getZoomLevel(): number {
-    // Converte il range in un livello di zoom approssimativo
-    if (this.range <= 5) return 16;
-    if (this.range <= 10) return 15;
-    if (this.range <= 30) return 14;
-    if (this.range <= 50) return 12;
-    if (this.range <= 100) return 10;
-    return 8;
   }
 }

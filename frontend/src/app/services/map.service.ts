@@ -23,7 +23,7 @@ export class MapService {
       center: [lat, lng],
       zoom: zoom,
       zoomControl: false,
-      dragging: false,
+      dragging: true,
       scrollWheelZoom: false,
       boxZoom: false,
       doubleClickZoom: false,
@@ -82,18 +82,6 @@ export class MapService {
       marker.addTo(this.map)
       this.markers.push(marker);
     });
-  }
-
-
-  // Aggiungi un marker alla mappa
-  addMarker(lat: number, lng: number): L.Marker {
-    const marker = L.marker([lat, lng]).addTo(this.map);
-    this.markers.push(marker);
-    return marker;
-  }
-
-  removeMarker(marker: L.Marker): void {
-    this.markers.splice(this.markers.indexOf(marker), 1);
   }
 
   // Rimuove tutti i marker dalla mappa
@@ -174,25 +162,14 @@ export class MapService {
     }
   }
 
-  // Abilita le opzioni (quando si apre il dialogo)
-  enableMapInteractions(): void {
-    this.map.zoomControl = true;
-    this.map.dragging = true;
-    this.map.scrollWheelZoom = true;
-    this.map.doubleClickZoom = true;
-    this.map.boxZoom = true;
-  }
-
-  enableDragging(): void {
-    this.map.dragging = true;
-  }
-
-  // Disabilita le opzioni (quando si chiude il dialogo)
-  disableMapInteractions(): void {
-    this.map.zoomControl = false;
-    this.map.dragging = false;
-    this.map.scrollWheelZoom = false;
-    this.map.doubleClickZoom = false;
-    this.map.boxZoom = false;
+  getZoomLevel(range: number): number {
+    this.range = range;
+    // Converte il range in un livello di zoom approssimativo
+    if (this.range <= 5) return 16;
+    if (this.range <= 10) return 15;
+    if (this.range <= 30) return 14;
+    if (this.range <= 50) return 12;
+    if (this.range <= 100) return 10;
+    return 8;
   }
 }

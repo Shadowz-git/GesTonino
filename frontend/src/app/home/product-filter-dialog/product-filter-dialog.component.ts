@@ -6,8 +6,7 @@ import {NgForOf} from '@angular/common';
 @Component({
   selector: 'app-product-filter-dialog',
   imports: [
-    FormsModule,
-    NgForOf
+    FormsModule
   ],
   templateUrl: './product-filter-dialog.component.html',
   styleUrl: './product-filter-dialog.component.css'
