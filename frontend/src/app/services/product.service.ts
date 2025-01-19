@@ -51,7 +51,6 @@ export class ProductService {
 
   updateProduct(code: string, activityId: string|null, product: any): Observable<any> {
     const url = `${this.apiUrl}/editProduct?code=${code}&activityId=${activityId}`;
-    console.log("URL: ",url);
     return this.http.put(url, product);
   }
 
