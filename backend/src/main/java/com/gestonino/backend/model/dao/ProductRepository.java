@@ -30,16 +30,20 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Product p SET p.name = :name, p.quantity = :quantity, p.price = :price, p.discount = :discount WHERE p.code = :code AND p.activity.id = :activity_id")
+    @Query("UPDATE Product p SET p.name = :name, p.quantity = :quantity, p.price = :price, p.discount = :discount, p.category.id = :category_id WHERE p.code = :code AND p.activity.id = :activity_id")
     void updateProductByCodeAndActivityId(@Param("code") String code,
                                           @Param("activity_id") String activity_id,
                                           @Param("name") String name,
                                           @Param("quantity") int quantity,
                                           @Param("price") double price,
-                                          @Param("discount") double discount);
+                                          @Param("discount") double discount,
+                                          @Param("category_id") String category_id);
 
     @Modifying
     @Transactional
     @Query("DELETE FROM Product p WHERE p.code IN :codes AND p.activity.id = :activityId")
     void deleteByCodesAndActivityId(@Param("codes") List<String> codes, @Param("activityId") Long activityId);
+
+    long countByActivityIdAndQuantityGreaterThanEqualAndQuantityLessThan(Long activityId, int minQuantity, int maxQuantity);
+    long countByActivityIdAndQuantity(Long activityId, int quantity);
 }
