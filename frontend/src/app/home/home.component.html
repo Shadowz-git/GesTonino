@@ -56,6 +56,7 @@
           <thead>
           <tr class="bg-gray-100 border-b">
             <th class="text-left px-4 py-2 text-gray-700 font-bold">Nome</th>
+            <th class="text-left px-4 py-2 text-gray-700 font-bold">Attività</th>
             <th class="text-left px-4 py-2 text-gray-700 font-bold">Prezzo</th>
             <th class="px-4 py-2"></th>
           </tr>
@@ -63,6 +64,7 @@
           <tbody>
           <tr *ngFor="let result of results" class="border-b hover:bg-gray-50">
             <td class="px-4 py-2 text-gray-800">{{ result.name }}</td>
+            <td class="px-4 py-2 text-gray-800">{{ result.activityName }}</td>
             <td class="px-4 py-2 text-gray-600">{{ result.price | currency:"EUR" }}</td>
             <td class="px-4 py-2 text-right">
               <button
