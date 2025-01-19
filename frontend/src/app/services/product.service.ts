@@ -56,9 +56,14 @@ export class ProductService {
   }
 
   getProductCounts(): Observable<{ lowStockCount: number; outOfStockCount: number }> {
+    // Recupera activityId dal localStorage o usa una stringa vuota come fallback
+    const activityId = localStorage.getItem("activity_id") || "";
+
+    // Crea HttpParams per passare activityId come query parameter
+    const params = new HttpParams().set('activity_id', activityId);
+
     return this.http.get<{ lowStockCount: number; outOfStockCount: number }>(
-      `${this.apiUrl}/getProductCounts`
-    );
+      `${this.apiUrl}/getProductCounts`, { params });
   }
 
 
