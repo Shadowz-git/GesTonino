@@ -38,7 +38,8 @@ export class MapComponent implements OnChanges, OnInit {
   }
 
   private initMap(): void {
-    this.mapService.initializeMap('map', this.latitude, this.longitude, 12)
+    this.mapService.initializeMap('map', this.latitude, this.longitude, 12);
+    this.mapService.addMarker(39.3456, 16.2345);
   }
 
   private updateMapView(): void {
@@ -49,18 +50,8 @@ export class MapComponent implements OnChanges, OnInit {
   }
 
   private updateMarkers(): void {
-    this.mapService.removeMarkers();
-
-    this.activities.forEach((activity: Activity) => {
-      const marker = L.marker([activity.lat, activity.lng]);
-
-      // Pop-up con nome dell'attività e numero di prodotti filtrati
-      marker.bindPopup(
-        `<strong>${activity.name}</strong><br>Prodotti: ${activity.filteredProductCount}`
-      );
-
-      this.mapService.addExistentMarker(marker);
-    });
+    // Passa l'array di attività al MapService per aggiungere i marker
+    this.mapService.updateMarkers(this.activities);
   }
 
   private getZoomLevel(): number {

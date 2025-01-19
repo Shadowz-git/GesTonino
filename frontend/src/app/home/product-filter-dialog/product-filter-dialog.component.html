@@ -21,19 +21,6 @@
     </div>
   </div>
 
-  <!-- Filtri per Categoria -->
-  <div class="mb-4">
-    <label class="block text-sm font-medium mb-2">Categorie</label>
-    <div *ngFor="let category of categories">
-      <label class="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          [(ngModel)]="category.selected"
-        />
-        <span>{{ category.name }}</span>
-      </label>
-    </div>
-  </div>
 
   <!-- Pulsanti Azione -->
   <div class="flex justify-end space-x-2 mt-6">

@@ -1,5 +1,5 @@
-<body class="bg-gray-600">
-  <div class="bg-green-300 flex items-center">
+<body class="" style="background-color: #526D82">
+  <div class="flex items-center bg-sectionBackground">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-[100px] w-[100px] ml-[80px] mr-3" viewBox="0 0 576 512">
       <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
       <path d="M512 80c8.8 0 16 7.2 16 16l0 320c0 8.8-7.2 16-16 16L64 432c-8.8 0-16-7.2-16-16L48 96c0-8.8 7.2-16 16-16l448 0zM64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l448 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM208 256a64 64 0 1 0 0-128 64 64 0 1 0 0 128zm-32 32c-44.2 0-80 35.8-80 80c0 8.8 7.2 16 16 16l192 0c8.8 0 16-7.2 16-16c0-44.2-35.8-80-80-80l-64 0zM376 144c-13.3 0-24 10.7-24 24s10.7 24 24 24l80 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-80 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l80 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-80 0z"/>
@@ -12,46 +12,50 @@
 
   <div class="grid grid-cols-3 gap-2">
     <!--Attività prodotti-->
-    <div class="m-3 col-span-2 bg-white shadow-lg rounded-lg border border-gray-200">
-      <h1 class="text-xl font-bold text-gray-700 text-center border-b p-2">Attività Prodotti</h1>
-      <div class="grid grid-cols-3 divide-x divide-gray-200">
+    <div class="m-3 col-span-2 shadow-lg rounded-lg border-2 border-gray-600 bg-sectionBackground">
+      <h1 class="text-xl font-bold text-gray-700 text-center border-b border-gray-600 p-2">Attività Prodotti</h1>
+      <div class="grid grid-cols-3 divide-x divide-gray-600">
         <!-- Nuovi -->
         <div class="p-4 text-center">
-          <p class="text-blue-500 text-4xl font-bold">{{counter}}</p>
+          <p class="text-blue-500 text-5xl font-bold">{{counter}}</p>
           <p class="text-gray-600 text-sm">Quantità</p>
-          <p class="text-sm text-gray-500 mt-2">Nuovi prodotti aggiunti</p>
+          <p class="text-m text-blue-500 mt-2">Nuovi prodotti aggiunti</p>
         </div>
 
         <!-- Quasi Finiti -->
         <div class="p-4 text-center">
-          <p class="text-yellow-500 text-4xl font-bold">{{lowStockCount}}</p>
+          <p class="text-yellow-500 text-5xl font-bold">{{lowStockCount}}</p>
           <p class="text-gray-600 text-sm">Quantità</p>
-          <p class="text-sm text-gray-500 mt-2">Prodotti in esaurimento</p>
+          <p class="text-m text-yellow-500 mt-2">Prodotti in esaurimento</p>
         </div>
         <!-- Non Disponibili -->
         <div class="p-4 text-center">
-          <p class="text-red-500 text-4xl font-bold">{{outOfStockCount}}</p>
+          <p class="text-red-500 text-5xl font-bold">{{outOfStockCount}}</p>
           <p class="text-gray-600 text-sm">Quantità</p>
-          <p class="text-sm text-gray-500 mt-2">Prodotti sono finiti</p>
+          <p class="text-m text-red-500 mt-2">Prodotti sono finiti</p>
         </div>
       </div>
     </div>
-    <!--Sommario inventario-->
-    <div class="m-3 bg-white shadow-lg rounded-lg border border-gray-200">
-      <h1 class="text-xl font-bold text-gray-700 text-center border-b p-2 ">Sommario inventario</h1>
-      <div class="flex items-center border-b-2 m-2">
-        <p class="text-nowrap">Prodotti Totali</p>
-        <div class="flex-auto w-5"></div>
-        <p class="mr-2 font-bold">123</p>
-      </div>
-      <div class="flex items-center border-b-2 m-2">
-        <p class="text-nowrap ">Valore Totale</p>
-        <div class="flex-auto w-5"></div>
-        <p class="mr-2 font-bold">€123456789</p>
+    <div class="m-3 shadow-lg rounded-lg border-2 border-gray-600 bg-sectionBackground">
+      <h1 class="text-xl font-bold text-gray-700 text-center border-b p-2 border-gray-600">Sommario inventario</h1>
+      <div class="items-center">
+
+        <!-- Prodotti Totali -->
+        <div class="flex items-center justify-between border-b-2 m-2 border-gray-600 p-2">
+          <p class="text-nowrap text-2xl">Prodotti Totali</p>
+          <p class="font-bold text-2xl">{{totalProduct}}</p>
+        </div>
+
+        <!-- Valore Totale -->
+        <div class="flex items-center justify-between m-2 p-2">
+          <p class="text-nowrap text-2xl">Valore Totale</p>
+          <p class="font-bold text-2xl">{{totalPrice}}</p>
+        </div>
       </div>
     </div>
 
-    <div class="m-3 col-span-3">
+
+    <div class="m-3 col-span-3 rounded-lg border-2 border-gray-600">
       <app-dashboardchart/>
     </div>
     </div>

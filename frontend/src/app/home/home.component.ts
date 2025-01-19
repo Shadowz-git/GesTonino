@@ -67,6 +67,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     // Inizializzazione (se necessario) eseguita al caricamento della Home
     this.fetchInitialCoordinates();
+
   }
 
   /**
@@ -123,7 +124,6 @@ export class HomeComponent implements OnInit {
         this.lat,
         this.lng,
         this.range,
-        this.filters.category || [],
         this.filters.priceRange || { min: -1, max: -1 }
       )
       .subscribe({
@@ -159,6 +159,7 @@ export class HomeComponent implements OnInit {
     });
 
     this.activities = Object.values(activitiesMap);
+    console.log("Attività:",this.activities);
   }
 
   public viewDetails(product: Product) {

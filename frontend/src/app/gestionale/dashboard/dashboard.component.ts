@@ -17,6 +17,8 @@ export class DashboardComponent implements OnInit {
   counter: number = 0;
   lowStockCount: number = 0; // Prodotti con quantità < 5
   outOfStockCount: number = 0; // Prodotti con quantità = 0
+  totalProduct: number = 0;
+  totalPrice: number = 0;
 
   constructor(private counterService: CounterService,
               private productService: ProductService) {}
@@ -36,6 +38,17 @@ export class DashboardComponent implements OnInit {
         console.error('Errore nel caricamento dei conteggi dei prodotti:', err);
       },
     });
+
+    this.productService.getTotalProdAndTotalPrice().subscribe({
+      next: (total) => {
+        this.totalProduct = total.totalProd;
+        this.totalPrice = total.totalPrice;
+      },
+      error: (err) => {
+        console.error('Errore nel caricamento del totale dei prodotti');
+      }
+    })
   }
+
 
 }

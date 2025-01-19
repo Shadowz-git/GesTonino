@@ -14,7 +14,6 @@ import {NgForOf} from '@angular/common';
 })
 export class ProductFilterDialogComponent implements OnInit {
   priceRange = { min: 0, max: 0 };
-  categories: { name: string; selected: boolean }[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<ProductFilterDialogComponent>,
@@ -22,26 +21,15 @@ export class ProductFilterDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Inizializza le categorie
-    this.categories = this.data.categories.map((name) => ({
-      name,
-      selected: false,
-    }));
   }
 
   clearFilters(): void {
     this.priceRange = { min: 0, max: 0 };
-    this.categories.forEach((category) => (category.selected = false));
   }
 
   applyFilters(): void {
-    const selectedCategories = this.categories
-      .filter((category) => category.selected)
-      .map((category) => category.name);
-
     this.dialogRef.close({
-      priceRange: this.priceRange,
-      categories: selectedCategories,
+      priceRange: this.priceRange
     });
   }
 }

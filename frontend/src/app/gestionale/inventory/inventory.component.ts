@@ -50,7 +50,7 @@ export class InventoryComponent implements OnInit {
         this.items = products.map(product => ({ ...product, selected: false }));
         console.log("items", this.items, "products", products);
         this.filteredItems = [...this.items];
-        this.selectedItemsCount = this.filteredItems.length;
+        this.updateSelectedCount();
         this.updatePagination();
       },
       error: (err) => {
@@ -107,6 +107,8 @@ export class InventoryComponent implements OnInit {
 
   updateSelectedCount(): void {
     this.selectedItemsCount = this.filteredItems.filter(item => item.selected).length;
+    console.log("Items count",this.selectedItemsCount)
+
   }
   deleteSelected(): void {
     // Ottieni i prodotti selezionati

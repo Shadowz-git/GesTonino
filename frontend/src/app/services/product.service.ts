@@ -78,7 +78,6 @@ export class ProductService {
    * @param lat Latitudine del punto di ricerca
    * @param lng Longitudine del punto di ricerca
    * @param radius Raggio di ricerca in km
-   * @param categories Array di categorie da filtrare
    * @param priceRange Oggetto con `min` e `max` per il range di prezzo
    * @returns Observable con i prodotti trovati
    */
@@ -87,7 +86,6 @@ export class ProductService {
     lat: number,
     lng: number,
     radius: number,
-    categories: string[],
     priceRange: { min: number; max: number }
   ): Observable<any> {
     let params = new HttpParams();
@@ -97,9 +95,6 @@ export class ProductService {
     if (lat) params = params.set('lat', lat.toString());
     if (lng) params = params.set('lng', lng.toString());
     if (radius) params = params.set('radius', radius.toString());
-    if (categories && categories.length > 0) {
-      params = params.set('categories', categories.join(','));
-    }
     if (priceRange) {
       if (priceRange.min !== undefined && priceRange.min !== -1) {
         params = params.set('minPrice', priceRange.min.toString());
@@ -112,4 +107,11 @@ export class ProductService {
     // Esegue la richiesta HTTP GET al backend
     return this.http.get(`${this.apiUrl}/searchProducts`, { params });
   }
+
+  getTotalProdAndTotalPrice(): Observable<any>{
+    let params = new HttpParams();
+    params=params.set('activity_id', localStorage.getItem("activity_id") || "");
+    return this.http.get(`${this.apiUrl}/getTotalProdAndTotalPrice`, { params });
+  }
+
 }

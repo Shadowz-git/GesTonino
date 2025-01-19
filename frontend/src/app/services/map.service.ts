@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
+import {Activity} from './product.service';
 
 @Injectable({
   providedIn: 'root'
@@ -54,12 +55,36 @@ export class MapService {
   }
 
   addExistentMarker(marker: L.Marker | any): void {
+    console.log("markerigno");
     this.markers.push(marker);
   }
+
+  updateMarkers(activities: Activity[]): void {
+    // Rimuovi tutti i marker esistenti
+    this.removeMarkers();
+
+    // Aggiungi i nuovi marker per ogni attività
+    activities.forEach((activity: Activity) => {
+      const marker = L.marker([activity.lat, activity.lng]);
+
+      // Aggiungi un popup con il nome dell'attività e il numero di prodotti filtrati
+      marker.bindPopup(
+        `<strong>${activity.name}</strong><br>Prodotti: ${activity.filteredProductCount}`
+      );
+
+      // Aggiungi il marker alla mappa e alla lista dei marker
+      this.addExistentMarker(marker);
+    });
+  }
+
 
   // Aggiungi un marker alla mappa
   addMarker(lat: number, lng: number): L.Marker {
     const marker = L.marker([lat, lng]).addTo(this.map);
+    // Aggiungi un popup con il nome dell'attività e il numero di prodotti filtrati
+    marker.bindPopup(
+      `<strong>quattromiglia</strong><br>Prodotti: noh`
+    );
     this.markers.push(marker);
     return marker;
   }
