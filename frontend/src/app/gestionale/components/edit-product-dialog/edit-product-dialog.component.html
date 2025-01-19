@@ -1,32 +1,77 @@
 <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
   <div class="bg-white rounded-lg shadow-lg w-96 p-6">
     <h1 class="text-xl font-semibold mb-4">Modifica Prodotto</h1>
-    <form class="space-y-4">
+    <form class="space-y-4" [formGroup]="editForm">
+      <!-- Nome -->
       <div>
         <label for="name" class="block text-sm font-medium">Nome:</label>
-        <input id="name" [(ngModel)]="updatedProduct.name" name="name" type="text"
+        <input id="name" formControlName="name" type="text"
                class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <!-- Messaggio di errore -->
+        <div *ngIf="editForm.get('name')?.invalid && editForm.get('name')?.touched" class="text-red-500 text-sm mt-1">
+          Il nome è obbligatorio.
+        </div>
       </div>
+
+      <!-- Quantità -->
       <div>
         <label for="quantity" class="block text-sm font-medium">Quantità:</label>
-        <input id="quantity" [(ngModel)]="updatedProduct.quantity" name="quantity" type="number"
+        <input id="quantity" formControlName="quantity" type="number"
                class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <!-- Messaggio di errore -->
+        <div *ngIf="editForm.get('quantity')?.invalid && editForm.get('quantity')?.touched" class="text-red-500 text-sm mt-1">
+          La quantità è obbligatoria e deve essere maggiore o uguale a 0.
+        </div>
       </div>
+
+      <!-- Prezzo -->
       <div>
         <label for="price" class="block text-sm font-medium">Prezzo:</label>
-        <input id="price" [(ngModel)]="updatedProduct.price" name="price" type="number"
+        <input id="price" formControlName="price" type="number"
                class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <!-- Messaggio di errore -->
+        <div *ngIf="editForm.get('price')?.invalid && editForm.get('price')?.touched" class="text-red-500 text-sm mt-1">
+          Il prezzo è obbligatorio e deve essere maggiore o uguale a 0.
+        </div>
       </div>
+
+      <!-- Sconto -->
+      <div>
+        <label for="discount" class="block text-sm font-medium">Sconto:</label>
+        <input id="discount" formControlName="discount" type="number"
+               class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <!-- Messaggio di errore -->
+        <div *ngIf="editForm.get('discount')?.invalid && editForm.get('discount')?.touched" class="text-red-500 text-sm mt-1">
+          Lo sconto è obbligatorio e deve essere compreso tra 0 e 100.
+        </div>
+      </div>
+
+      <!-- Categoria -->
+      <div>
+        <label class="block text-sm font-medium">Categoria:</label>
+        <select formControlName="category"
+                class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500">
+          <option value="">Seleziona una categoria</option> <!-- Opzione vuota -->
+          <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+        </select>
+        <!-- Messaggio di errore -->
+        <div *ngIf="editForm.get('category')?.invalid && editForm.get('category')?.touched" class="text-red-500 text-sm mt-1">
+          La categoria è obbligatoria.
+        </div>
+      </div>
+
+      <!-- Codice -->
       <div>
         <label for="code" class="block text-sm font-medium">Codice:</label>
-        <input id="code" [(ngModel)]="updatedProduct.code" name="code" type="text"
-               class="w-full bg-gray-200 border border-gray-300 rounded-md p-2" disabled />
+        <input id="code" formControlName="code" type="text"
+               class="w-full bg-gray-200 border border-gray-300 rounded-md p-2" />
       </div>
     </form>
 
     <div class="flex justify-end space-x-4 mt-6">
       <button (click)="onCancel()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md">Annulla</button>
-      <button (click)="onSave()" class="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-md">Salva</button>
+      <button (click)="onSave()"
+              class="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-md">Salva</button>
     </div>
   </div>
 </div>
