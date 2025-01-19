@@ -4,12 +4,14 @@ import {ProductFilterDialogComponent} from '../product-filter-dialog/product-fil
 import {MatDialog} from '@angular/material/dialog';
 import {ProductFilters} from '../../services/product.service';
 import {NgIf} from '@angular/common';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-product-research',
   imports: [
     FormsModule,
     NgIf,
+    RouterLink,
   ],
   templateUrl: './product-research.component.html',
   styleUrl: './product-research.component.css'

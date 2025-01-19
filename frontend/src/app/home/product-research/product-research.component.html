@@ -57,7 +57,7 @@
         Cerca
       </button>
       <div *ngIf="itemFindedCount > 0">
-        <a href="#resultProducts" class="text-sm text-gray-600">Trovati {{itemFindedCount}} corrsipondenti alla tua ricerca.</a>
+        <a routerLink="[]" fragment="resultProducts" class="text-sm text-gray-600">Trovati {{itemFindedCount}} corrsipondenti alla tua ricerca.</a>
       </div>
       <div *ngIf="itemFindedCount == -1">
         <p class="text-sm text-gray-600">Non è stato trovato nessun prodotto.</p>
