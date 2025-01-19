@@ -1,15 +1,19 @@
 import {Component, Output, EventEmitter, OnInit} from '@angular/core';
 import {Item} from '../../models/item.model';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import { ProductService, Product } from '../../../services/product.service';
 import {HttpClient} from '@angular/common/http';
+import {NgForOf} from '@angular/common';
+import {CounterService} from '../../../services/counter.service';
+
+//TODO: Validare il form
 
 @Component({
   selector: 'app-add-product-dialog',
   templateUrl: './add-product-dialog.component.html',
   imports: [
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgForOf
   ],
   styleUrls: ['./add-product-dialog.component.css']
 })
@@ -21,7 +25,7 @@ export class AddProductDialogComponent implements OnInit {
   activities: any[] = []; // Popolato con l'API delle attività
 
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private counterService: CounterService) {
     this.productForm = this.fb.group({
       id:Date.now(),
       name: "",
@@ -38,14 +42,17 @@ export class AddProductDialogComponent implements OnInit {
   @Output() cancel = new EventEmitter<void>();
   @Output() save = new EventEmitter<Item>();
 
+
   ngOnInit() {
     this.loadCategories();
     this.loadActivities();
+    this.counterService.loadCounter();
   }
 
   loadCategories() {
     this.http.get('http://localhost:8080/api/categories').subscribe((data: any) => {
       this.categories = data;
+      console.log("data categories:", data)
     });
   }
 
@@ -61,6 +68,7 @@ export class AddProductDialogComponent implements OnInit {
 
   onSave() {
     if (this.productForm.valid) {
+      this.counterService.incrementCounter();
       const productData = {
         id: "",
         name: this.productForm.value.name,
@@ -68,7 +76,7 @@ export class AddProductDialogComponent implements OnInit {
         price: this.productForm.value.price,
         quantity: this.productForm.value.quantity,
         discount: this.productForm.value.discount || 0, // Imposta 0 se non specificato
-        category: { id: 1 }, // Associa la categoria per ID
+        category: { id: this.productForm.value.category }, // Associa la categoria per ID
         activity: { id: localStorage.getItem("activity_id") }, // Associa l'attività per ID
       };
 

@@ -9,8 +9,10 @@
 
     <div>
       <label class="block text-sm font-medium">Categoria:</label>
-      <input formControlName="category" name="category" type="text"
-             class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500" />
+      <select formControlName="category" name="category"
+              class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-indigo-500">
+        <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+      </select>
     </div>
 
     <div>
