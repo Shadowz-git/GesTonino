@@ -1,11 +1,12 @@
-<!--TODO: Sistemare gli stili e i colori. Nel chill ovviamente -->
-<main class="flex flex-col h-screen max-w-full w-full max-h-screen">
+<main class="flex flex-col h-full min-h-screen max-w-full w-full bg-backgroundBlue">
   <app-header class="flex-initial"/>
+
+  <!-- Contenitore superiore (mappa e login) -->
   <div id="homepage" class="h-full flex flex-row bg-backgroundBlue py-1">
     <!-- CERCA PRODOTTI -->
     <div id="map" class="w-[49.95%] bg-backgroundBlue rounded-lg m-2 wrapper">
       <div id="mapComponent" class="w-full h-full backgroundMap">
-      <!-- Mappa di sfondo -->
+        <!-- Mappa di sfondo -->
         <app-map
           [latitude]="lat"
           [longitude]="lng"
@@ -16,60 +17,67 @@
       </div>
 
       <!-- Barra di ricerca -->
-        <div id="formSearch" class="bg-sectionBackground rounded-md p4 mt-10 mx-5 border shadow-md border-black onMapElement">
-          <app-product-research
-            [city]="city"
-            [lat]="lat"
-            [lng]="lng"
-            [range]="range"
-            [productQuery]="productQuery"
-            [filters]="filters"
-            (cityChange)="onCityChange($event)"
-            (rangeChange)="onRangeChange($event)"
-            (productSearchChange)="onProductSearchChange($event)"
-            (filtersChange)="onFiltersChange($event)"
-            (search)="onSearch()"
-          ></app-product-research>
+      <div id="formSearch" class="bg-sectionBackground rounded-md p4 mt-10 mx-5 border shadow-md border-black onMapElement">
+        <app-product-research
+          [city]="city"
+          [lat]="lat"
+          [lng]="lng"
+          [range]="range"
+          [productQuery]="productQuery"
+          [filters]="filters"
+          (cityChange)="onCityChange($event)"
+          (rangeChange)="onRangeChange($event)"
+          (productSearchChange)="onProductSearchChange($event)"
+          (filtersChange)="onFiltersChange($event)"
+          (search)="onSearch()"
+        ></app-product-research>
       </div>
     </div>
+
+    <!-- Divisore -->
+    <div class="w-[0.1%] rounded-lg bg-sectionBackground"></div>
+
     <!-- LOGIN -->
-    <div class="w-[0.1%] rounded-lg bg-sectionBackground "></div>
-    <div class="w-[49.95%] bg-sectionBackground p-3 m-2 rounded-lg flex flex-col items-center " >
+    <div class="w-[49.95%] bg-sectionBackground p-3 m-2 rounded-lg flex flex-col items-center">
       <div class="my-auto">
         <app-login></app-login>
       </div>
     </div>
   </div>
-  <div *ngIf="results.length" class="mt-6">
-    <h3 class="text-lg font-bold text-gray-700">Risultati della ricerca</h3>
-    <div class="mt-4 overflow-x-auto">
-      <table class="min-w-full bg-white shadow rounded">
-        <thead>
-        <tr class="bg-gray-100 border-b">
-          <th class="text-left px-4 py-2 text-gray-700 font-bold">Nome</th>
-          <th class="text-left px-4 py-2 text-gray-700 font-bold">Categoria</th>
-          <th class="text-left px-4 py-2 text-gray-700 font-bold">Prezzo</th>
-          <th class="px-4 py-2"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let result of results" class="border-b hover:bg-gray-50">
-          <td class="px-4 py-2 text-gray-800">{{ result.name }}</td>
-          <td class="px-4 py-2 text-gray-600">{{ result.category }}</td>
-          <td class="px-4 py-2 text-gray-600">{{ result.price | currency }}</td>
-          <td class="px-4 py-2 text-right">
-            <button
-              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
-              (click)="viewDetails(result)"
-            >
-              Dettagli
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+
+  <!-- Risultati della ricerca (sotto la mappa e il login) -->
+  <div *ngIf="results.length" class="flex-grow m-3 border rounded-lg bg-white">
+    <div class="m-3">
+      <h3 class="text-lg font-bold text-gray-700">Risultati della ricerca</h3>
+      <div class="m-3">
+        <table class="w-full bg-white shadow rounded">
+          <thead>
+          <tr class="bg-gray-100 border-b">
+            <th class="text-left px-4 py-2 text-gray-700 font-bold">Nome</th>
+            <th class="text-left px-4 py-2 text-gray-700 font-bold">Prezzo</th>
+            <th class="px-4 py-2"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let result of results" class="border-b hover:bg-gray-50">
+            <td class="px-4 py-2 text-gray-800">{{ result.name }}</td>
+            <td class="px-4 py-2 text-gray-600">{{ result.price | currency:"EUR" }}</td>
+            <td class="px-4 py-2 text-right">
+              <button
+                class="bg-blue-500 hover:bg-blue-600 text-white px-4 rounded-md"
+                (click)="viewDetails(result)"
+              >
+                Dettagli
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
+
+  <app-footer></app-footer>
 </main>
-<app-footer/>
+

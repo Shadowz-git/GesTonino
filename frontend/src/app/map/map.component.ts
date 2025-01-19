@@ -39,7 +39,6 @@ export class MapComponent implements OnChanges, OnInit {
 
   private initMap(): void {
     this.mapService.initializeMap('map', this.latitude, this.longitude, 12);
-    this.mapService.addMarker(39.3456, 16.2345);
   }
 
   private updateMapView(): void {
