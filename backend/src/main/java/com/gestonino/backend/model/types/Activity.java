@@ -33,13 +33,7 @@ public class Activity {
     @JsonBackReference("user-activity")
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "activity_categories",
-            joinColumns = @JoinColumn(name = "activity_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private List<Category> categories;
+
 
     @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("product-activity")
@@ -100,14 +94,6 @@ public class Activity {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
     }
 
     public List<Product> getProducts() {

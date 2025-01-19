@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -48,6 +49,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT SUM(i.quantity) FROM Product i WHERE i.activity.id = :activity_id")
     Long sumQuantityByIdActivity(@Param("activity_id") Long idActivity);
 
+
+    @Query("SELECT COALESCE(SUM((p.price * p.quantity)), 0.0) " +
+            "FROM Product p " +
+            "WHERE p.activity.id = :activityId")
+    Long calculateTotalByActivityId(@Param("activityId") Long activityId);
 
     //TODO: Totale va moltiplicato in base alla quantità
     @Query("SELECT SUM(i.price) FROM Product i WHERE i.activity.id = :activity_id")
