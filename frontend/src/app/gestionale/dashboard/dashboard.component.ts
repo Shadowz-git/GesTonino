@@ -2,11 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {DashboardchartComponent} from '../components/dashboardchart/dashboardchart.component';
 import {CounterService} from '../../services/counter.service';
 import {ProductService} from '../../services/product.service';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
-    DashboardchartComponent
+    DashboardchartComponent,
+    NgIf
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
@@ -34,7 +36,7 @@ export class DashboardComponent implements OnInit {
         this.lowStockCount = counts.lowStockCount; // Aggiorna il conteggio dei prodotti con quantità < 5
         this.outOfStockCount = counts.outOfStockCount; // Aggiorna il conteggio dei prodotti con quantità = 0
       },
-      error: (err) => {
+      error: () => {
         // console.error('Errore nel caricamento dei conteggi dei prodotti:', err);
       },
     });
@@ -44,7 +46,7 @@ export class DashboardComponent implements OnInit {
         this.totalProduct = total.totalProd;
         this.totalPrice = total.totalPrice;
       },
-      error: (err) => {
+      error: () => {
         // console.error('Errore nel caricamento del totale dei prodotti');
       }
     })

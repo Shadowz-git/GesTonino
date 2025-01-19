@@ -8,6 +8,7 @@ import {MapService} from '../../../services/map.service';
 import {NgClass, NgIf} from '@angular/common';
 import {SettingsService} from '../../../services/settings.service';
 import {NotificationService} from '../../../services/notification.service';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-settings-dialog',
@@ -35,7 +36,8 @@ export class SettingsDialogComponent implements OnDestroy {
   constructor(private locationService: LocationService,
               private settingsService: SettingsService,
               private mapService: MapService,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private authService: AuthService) {
     // Definizione del form con i controlli e la validazione
     this.settingsForm = new FormGroup({
       activityName: new FormControl('', [Validators.required]),
@@ -65,12 +67,12 @@ export class SettingsDialogComponent implements OnDestroy {
 
   private isClickInsideContent = false;
 
-  onContentMouseDown(event: MouseEvent): void {
+  onContentMouseDown(): void {
     this.isClickInsideContent = true;
   }
 
   @HostListener('document:mousedown', ['$event'])
-  onDocumentMouseDown(event: MouseEvent): void {
+  onDocumentMouseDown(): void {
     if (!this.isClickInsideContent) {
       this.closeModal();
     }
@@ -109,14 +111,15 @@ export class SettingsDialogComponent implements OnDestroy {
 
     // Chiamata al servizio per inviare i dati al backend
     this.settingsService.addActivity(formData).subscribe({
-      next: () => {
+      next: (response) => {
+        this.authService.setActivity(response.id, response.name);
         this.notificationService.addNotification({
           type: 'success',
           title: 'Operazione completata con successo',
           message: ''
         })
       },
-      error: (err) => {
+      error: () => {
         // console.error('Errore durante l\'aggiunta dell\'attività:', err);
         this.notificationService.addNotification({
           type: 'error',
@@ -125,6 +128,7 @@ export class SettingsDialogComponent implements OnDestroy {
         })
       },
     });
+    this.closeModal()
   }
 
   closeModal(): void {

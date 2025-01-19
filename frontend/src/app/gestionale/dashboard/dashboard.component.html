@@ -6,7 +6,8 @@
     </svg>
     <div class="flex-row">
       <p class="text-m font-bold">Email: {{email}}</p>
-      <p class="text-gray-500">Nome Attività: {{activityName}}</p>
+      <p *ngIf="activityName != null" class="text-gray-500">Nome Attività: {{activityName}}</p>
+      <p *ngIf="activityName === null" class="text-red-500">Nessuna attività, vai nelle Impostazioni per crearne una</p>
     </div>
   </div>
 
