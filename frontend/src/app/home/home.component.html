@@ -1,4 +1,4 @@
-<main class="flex flex-col h-full min-h-screen max-w-full w-full bg-backgroundBlue" appStopPropagation>
+<main class="flex flex-col h-full min-h-screen max-w-full w-full bg-backgroundBlue">
   <app-header class="flex-initial"/>
 
   <!-- Contenitore superiore (mappa e login) -->
@@ -17,7 +17,7 @@
       </div>
 
       <!-- Barra di ricerca -->
-      <div id="formSearch" class="bg-sectionBackground rounded-md p4 mt-10 mx-5 border shadow-md border-black onMapElement">
+      <div id="formSearch" class="bg-sectionBackground rounded-md p4 mt-10 mx-5 border shadow-md border-black onMapElement" appStopPropagation>
         <app-product-research
           [city]="city"
           [lat]="lat"
