@@ -10,6 +10,7 @@ import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {MapService} from '../services/map.service';
+import {StopPropagationDirective} from '../stop-propagation.directive';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,8 @@ import {MapService} from '../services/map.service';
     CurrencyPipe,
     NgIf,
     MapComponent,
-    NgForOf
+    NgForOf,
+    StopPropagationDirective
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
