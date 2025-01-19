@@ -1,0 +1,1 @@
+import{Ua as o,gb as n,hb as i,tb as s}from"./chunk-VETP3HG3.js";var m=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=o({type:t,selectors:[["app-customize"]],decls:2,vars:0,template:function(e,a){e&1&&(n(0,"p"),s(1,"customize works!"),i())},encapsulation:2})};export{m as CustomizeComponent};
